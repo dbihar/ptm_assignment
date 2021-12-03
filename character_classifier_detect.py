@@ -10,6 +10,37 @@ IMG_SIZE=32
 from tensorflow import keras
 model = keras.models.load_model('Model')
 
+validation = tf.keras.preprocessing.image_dataset_from_directory(
+    "Data/Validation", image_size=(32, 32), batch_size=1, color_mode='grayscale'
+)
+
+x_test, y_test = (zip(*validation))
+x_test, y_test = np.array(x_test), np.array(y_test)
+x_test, y_test = np.squeeze(x_test), np.squeeze(y_test)
+x_test = tf.keras.utils.normalize(x_test, axis = 1)
+x_testr = np.array(x_test).reshape(-1, IMG_SIZE, IMG_SIZE, 1)
+
+predictions = model.predict([x_testr])
+#print(predictions)
+
+
+import matplotlib.pyplot as plt
+#Preview data
+
+class_names = validation.class_names
+plt.figure(figsize=(10, 10))
+start_im = 100
+for i in range(9):
+    ax = plt.subplot(3, 3, i + 1)
+    plt.imshow(x_test[i + start_im])
+    plt.title(class_names[np.argmax(predictions[i + start_im])])
+    plt.axis("off")
+plt.show()
+
+#plt.imshow(x_test[0])
+#print(np.argmax(predictions[0]))
+
+
 #Predicting arbitrary img
 """
 import cv2
