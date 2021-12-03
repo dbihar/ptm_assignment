@@ -29,7 +29,7 @@ import matplotlib.pyplot as plt
 
 class_names = validation.class_names
 plt.figure(figsize=(10, 10))
-start_im = 100
+start_im = 0
 for j in range(10):
     for i in range(9):
         start_im = start_im + 100
