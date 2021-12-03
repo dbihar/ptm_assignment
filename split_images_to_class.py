@@ -54,7 +54,7 @@ def main():
             images = parse_folder(values["file"])
             if images:
                 load_image(images[0], window)
-        if event == "Next --> move to 1" and images:
+        if (event == "Next --> move to 1") and images:
             if location == len(images) - 1:
                 print("EOF")
             else:

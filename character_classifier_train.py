@@ -2,13 +2,14 @@ import tensorflow as tf
 import numpy as np
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten, Conv2D, MaxPooling2D
+#from sklearn.model_selection import train_test_split
 
 IMG_SIZE=32
 
 # Loading our data.
 #color_mode='grayscale'
 dataset = tf.keras.preprocessing.image_dataset_from_directory(
-    "Data/Train", image_size=(32, 32), batch_size=1, color_mode='grayscale'
+    "Data/Train2", image_size=(32, 32), batch_size=1, color_mode='grayscale'
 )
 
 validation = tf.keras.preprocessing.image_dataset_from_directory(
@@ -25,13 +26,17 @@ x_test, y_test = (zip(*validation))
 x_test, y_test = np.array(x_test), np.array(y_test)
 x_test, y_test = np.squeeze(x_test), np.squeeze(y_test)
 
+#x_train, x_test, y_train, y_test = train_test_split(x_test, y_test,
+#                                                    test_size = 0.2,
+#                                                    random_state = 1)
+
 print("Data = ", x_train.shape, y_train.shape, "Val = ", x_test.shape, y_test.shape)
 
 
 import matplotlib.pyplot as plt
 #Preview data
 
-class_names = dataset.class_names
+class_names = validation.class_names
 plt.figure(figsize=(10, 10))
 
 start_im = 100
@@ -99,7 +104,7 @@ model.add(Activation("softmax"))
 
 model.summary()
 model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=['accuracy'])
-model.fit(x_trainr, y_train, epochs=5, validation_split = 0.3)
+model.fit(x_trainr, y_train, epochs=4, validation_split = 0.3)
 
 test_loss, test_acc = model.evaluate(x_testr, y_test)
 print("Test Loss on 10,000 test samples", test_loss)
