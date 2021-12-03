@@ -23,7 +23,6 @@ x_train, y_train = np.squeeze(x_train), np.squeeze(y_train)
 # Validation
 x_test, y_test = (zip(*validation))
 x_test, y_test = np.array(x_test), np.array(y_test)
-
 x_test, y_test = np.squeeze(x_test), np.squeeze(y_test)
 
 print("Data = ", x_train.shape, y_train.shape, "Val = ", x_test.shape, y_test.shape)
@@ -31,16 +30,18 @@ print("Data = ", x_train.shape, y_train.shape, "Val = ", x_test.shape, y_test.sh
 
 import matplotlib.pyplot as plt
 #Preview data
-"""
+
 class_names = dataset.class_names
 plt.figure(figsize=(10, 10))
+
+start_im = 100
 for i in range(9):
     ax = plt.subplot(3, 3, i + 1)
-    plt.imshow(x_train[i])
-    plt.title(class_names[y_train[i]])
+    plt.imshow(x_train[i + start_im])
+    plt.title(class_names[y_train[i + start_im]])
     plt.axis("off")
 plt.show()
-"""
+
 # Normalizing
 x_train = tf.keras.utils.normalize(x_train, axis = 1)
 x_test = tf.keras.utils.normalize(x_test, axis = 1)
@@ -93,12 +94,12 @@ model.add(Dense(32))
 model.add(Activation("relu"))
 
 ### Fully connected layer 3, output layer must be equal to number of classes
-model.add(Dense(10))
+model.add(Dense(17))
 model.add(Activation("softmax"))
 
 model.summary()
 model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=['accuracy'])
-model.fit(x_trainr, y_train, epochs=1, validation_split = 0.3)
+model.fit(x_trainr, y_train, epochs=5, validation_split = 0.3)
 
 test_loss, test_acc = model.evaluate(x_testr, y_test)
 print("Test Loss on 10,000 test samples", test_loss)
