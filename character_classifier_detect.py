@@ -30,12 +30,14 @@ import matplotlib.pyplot as plt
 class_names = validation.class_names
 plt.figure(figsize=(10, 10))
 start_im = 100
-for i in range(9):
-    ax = plt.subplot(3, 3, i + 1)
-    plt.imshow(x_test[i + start_im])
-    plt.title(class_names[np.argmax(predictions[i + start_im])])
-    plt.axis("off")
-plt.show()
+for j in range(10):
+    for i in range(9):
+        start_im = start_im + 100
+        ax = plt.subplot(3, 3, i + 1)
+        plt.imshow(x_test[i + start_im])
+        plt.title(class_names[np.argmax(predictions[i + start_im])])
+        plt.axis("off")
+    plt.show()
 
 #plt.imshow(x_test[0])
 #print(np.argmax(predictions[0]))
