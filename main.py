@@ -1,5 +1,5 @@
 from matplotlib import image
-
+from expression_calculator import eval_expression_string, eval_expression_list
 
 from character_separator import separate_characters
 import cv2
@@ -20,3 +20,4 @@ def calculate(img):
         expression = expression + classify_image(character_im, model)
     
     print("Expression = ", expression)
+    print("Solution = ", eval_expression_string(expression))

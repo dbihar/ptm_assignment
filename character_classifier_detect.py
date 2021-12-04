@@ -9,7 +9,7 @@ def get_class_names():
     class_names = ['0', '1', '(', ')', '+', '-', '', '/', '×', '2', '3', '4', '5', '6', '7', '8', '9']
     return class_names
 
-def classify_image(img, model, IMG_SIZE = 32):
+def classify_image(img, model, IMG_SIZE = 32, debug = False):
     #import cv2
     #img = cv2.imread('three.png')
     #plt.imshow(img)
@@ -31,20 +31,19 @@ def classify_image(img, model, IMG_SIZE = 32):
     predictions = model.predict(newimg)
     class_names = get_class_names()
     print("predict = ",class_names[np.argmax(predictions[0])])
-
-
-    import matplotlib.pyplot as plt
-    plt.figure()
-    plt.imshow((img))
-    plt.title(class_names[np.argmax(predictions[0])])
-    plt.axis("off")
-    plt.show()
-
-    plt.figure()
-    plt.imshow(np.squeeze(normalized_img))
-    plt.title(class_names[np.argmax(predictions[0])])
-    plt.axis("off")
-    plt.show()
+    
+    if(debug):
+        import matplotlib.pyplot as plt
+        #plt.figure()
+        #plt.imshow((img))
+        #plt.title(class_names[np.argmax(predictions[0])])
+        #plt.axis("off")
+        #plt.show()
+        plt.figure()
+        plt.imshow(np.squeeze(normalized_img))
+        plt.title(class_names[np.argmax(predictions[0])])
+        plt.axis("off")
+        plt.show()
 
     return (class_names[np.argmax(predictions[0])])
 
