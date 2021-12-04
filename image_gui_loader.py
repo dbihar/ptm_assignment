@@ -4,6 +4,9 @@ import io
 import os
 import PySimpleGUI as sg
 from PIL import Image
+import cv2
+from main import calculate
+
 file_types = [("JPEG (*.jpg)", "*.jpg"),
               ("All files (*.*)", "*.*")]
 def image_load():
@@ -14,6 +17,7 @@ def image_load():
             sg.Input(size=(25, 1), key="-FILE-"),
             sg.FileBrowse(file_types=file_types),
             sg.Button("Load Image"),
+            sg.Button("Calculate"),
         ],
     ]
     window = sg.Window("Image Viewer", layout)
@@ -29,6 +33,10 @@ def image_load():
                 bio = io.BytesIO()
                 image.save(bio, format="PNG")
                 window["-IMAGE-"].update(data=bio.getvalue())
+        if event == "Calculate":
+            img = cv2.imread(values["-FILE-"])
+            calculate(img)
+
     window.close()
 if __name__ == "__main__":
     image_load()
