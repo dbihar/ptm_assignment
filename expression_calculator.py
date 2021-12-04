@@ -1,6 +1,8 @@
 import argparse
 import re
 
+from numpy import nan
+
 def is_number(item):
     try:
         float(item)
@@ -13,6 +15,9 @@ def set_up_list(ex):
     ex = ex.replace(" ", "")
     ex = ex.replace("x", "*")
     ex = ex.replace("×", "*")
+    ex = ex.replace("+++", "+")
+    ex = ex.replace("++", "+")
+    
     if (ex[0] in ["-", "+"]):
         ex = "0" + ex
 
@@ -45,20 +50,24 @@ def set_up_list(ex):
 
 
 def perform_operation(n1, operand, n2):
-    if operand == "+":
-        return str(float(n1) + float(n2))
-    elif operand == "-":
-        return str(float(n1) - float(n2))
-    elif operand == "*":
-        return str(float(n1) * float(n2))
-    elif operand == "/":
-        try:
-            n = str(float(n1) / float(n2))
-            return n
-        except ZeroDivisionError:
-            print("You tried to divide by 0.")
-            print("Just for that I am going to terminate myself")
-            exit()
+    try:
+        if operand == "+":
+            return str(float(n1) + float(n2))
+        elif operand == "-":
+            return str(float(n1) - float(n2))
+        elif operand == "*":
+            return str(float(n1) * float(n2))
+        elif operand == "/":
+            try:
+                n = str(float(n1) / float(n2))
+                return n
+            except ZeroDivisionError:
+                print("You tried to divide by 0.")
+                print("Just for that I am going to terminate myself")
+                exit()
+    except ValueError:
+        print("Value error, expression probably read incorrectly ")
+        return "nan"
 
 def eval_expression_string(ex):
     expression = set_up_list(ex)

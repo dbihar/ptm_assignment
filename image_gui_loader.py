@@ -6,6 +6,7 @@ import PySimpleGUI as sg
 from PIL import Image
 import cv2
 from main import calculate
+import sys
 
 file_types = [("JPEG (*.jpg)", "*.jpg"),
               ("All files (*.*)", "*.*")]
@@ -35,7 +36,14 @@ def image_load():
                 window["-IMAGE-"].update(data=bio.getvalue())
         if event == "Calculate":
             img = cv2.imread(values["-FILE-"])
-            calculate(img)
+            try:
+                calculate(img)
+            except KeyboardInterrupt:
+                print('Expression not correct')
+                try:
+                    sys.exit(0)
+                except SystemExit:
+                    os._exit(0)
 
     window.close()
 if __name__ == "__main__":

@@ -1,0 +1,20 @@
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8  offset-lg-2">
+
+            <h2 class="mt-5">CAMERA APP PHOTOMATH Daniel Bihar</h2>
+			<form method="post" action="{{ url_for('tasks') }}">
+			<input type="submit" value="Calculate" name="stop"  style="width: 260px; height: 100px; font-size:60px;"/>
+			<input type="submit" value="Capture" name="click" style="width: 260px; height: 100px; font-size:60px;" />
+			</form>
+            <img src="{{ url_for('video_feed') }}" height="80%">
+			<h3 style="font-family:courier;">Instructions:</h3>
+			<ol style="font-family:courier;">
+			<li>Capture to take a picture</li>
+			<li>Calculate to calculate expression</li>
+			
+        </div>
+    </div>
+</div>
+</body>

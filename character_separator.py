@@ -130,13 +130,14 @@ def separate_characters(image, IMG_SIZE = 32, show_characters = False, save_char
     #print(ROI_list)
     ROI_list = [(resize_image(item[0], (IMG_SIZE,IMG_SIZE))) for item in ROI_list]
 
-    for ROI in ROI_list:
-        #ROI = cv2.resize(ROI, (IMG_SIZE,IMG_SIZE), interpolation = cv2.INTER_AREA)
-        if(show_characters):
-            cv2.imshow('Character', ROI)
-            key = cv2.waitKey(200)
-        if(save_characters):
-            pass
+    if(show_characters):
+        stack = np.hstack(ROI_list)
+        cv2.imshow('Character', stack)
+        key = cv2.waitKey(1200)
+        for ROI in ROI_list:
+            #ROI = cv2.resize(ROI, (IMG_SIZE,IMG_SIZE), interpolation = cv2.INTER_AREA)
+            if(save_characters):
+                 cv2.imwrite(os.path.join(PATH , 'ch_at_' + str(x) + ".jpg"), resize_image(ROI, (IMG_SIZE,IMG_SIZE)))
 
     return ROI_list
 
@@ -166,7 +167,6 @@ if __name__ == '__main__':
 
     #thresh = cv2.bitwise_not(thresh)
     cv2.imshow('tresh ', thresh)
-    key = cv2.waitKey(5000)
 
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1,3)) #This kernel is to catch slender - sign
     dilate = cv2.dilate(thresh, kernel, iterations=2)
@@ -187,10 +187,9 @@ if __name__ == '__main__':
 
     ROI_in_order = sorted(ROI_list, key=lambda tup: tup[1])
 
-    for ROI, x in ROI_in_order:
-        ROI = resize_image(ROI, (IMG_SIZE,IMG_SIZE))
-        cv2.imshow('Character at ' + str(x), ROI)
-        key = cv2.waitKey(400)
+    stack = np.hstack(ROI_list)
+    cv2.imshow('Character', stack)
+    key = cv2.waitKey(5000)
 
     save_characters = True
     if(save_characters):

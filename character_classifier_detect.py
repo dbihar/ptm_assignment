@@ -30,7 +30,7 @@ def classify_image(img, model, IMG_SIZE = 32, debug = False):
 
     predictions = model.predict(newimg)
     class_names = get_class_names()
-    print("predict = ",class_names[np.argmax(predictions[0])])
+    #print("predict = ",class_names[np.argmax(predictions[0])])
     
     if(debug):
         import matplotlib.pyplot as plt
