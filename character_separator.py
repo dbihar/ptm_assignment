@@ -9,10 +9,10 @@ def resize_image(img, size=(32,32)):
 
     h, w = img.shape[:2]
     c = img.shape[2] if len(img.shape)>2 else 1
-    print(h,w)
+    #print(h,w)
     
     if h > w * 2.8: 
-        print("extreme slender")
+        print("Extreme slender")
         img = cv2.resize(img, (12,27), cv2.INTER_CUBIC)
         h, w = img.shape[:2]
         new_image_width = 32
@@ -29,7 +29,7 @@ def resize_image(img, size=(32,32)):
         return result
 
     if h > w: 
-        print("normal slender")
+        print("Normal slender")
         img = cv2.resize(img, (23,27), cv2.INTER_CUBIC)
         h, w = img.shape[:2]
         new_image_width = 32
@@ -45,7 +45,7 @@ def resize_image(img, size=(32,32)):
         result[y_center:y_center+h, x_center:x_center+w] = img
         return result
 
-    print("wide")
+    print("Wide character")
     fact = w / 20.
     w = 13
     h = int(float(h) / fact)
@@ -63,50 +63,28 @@ def resize_image(img, size=(32,32)):
     # copy img image into center of result image
     result[y_center:y_center+h, x_center:x_center+w] = img
     result = cv2.resize(result, (32,32), cv2.INTER_CUBIC)
-
-    #dif = h if h > w else w
-    """
-    dif = w
-
-    interpolation = cv2.INTER_AREA if dif > (size[0]+size[1])//2 else cv2.INTER_CUBIC
-
-    x_pos = (dif - w)//2
-    y_pos = (dif - h)//2
-
-    if len(img.shape) == 2:
-        mask = np.zeros((dif, dif), dtype=img.dtype)
-        mask[y_pos:y_pos+h, x_pos:x_pos+w] = img[:h, :w]
-    else:
-        mask = np.zeros((dif, dif, c), dtype=img.dtype)
-        mask[y_pos:y_pos+h, x_pos:x_pos+w, :] = img[:h, :w, :]
-    """
     return result
-    #return cv2.resize(mask, size, interpolation)
 
-def separate_characters(image, IMG_SIZE = 32, show_characters = False, save_characters = False):
+def separate_characters(image, IMG_SIZE = 32, save_characters = False, debug = False):
     PATH = 'Characters'
     #image = imutils.resize(image, height = 1000)
     image = imutils.resize(image, height = 400)
-    #image = cv2.bitwise_not(image)
-
-    #(thresh, image) = cv2.threshold(image, 127, 255, cv2.THRESH_BINARY)
-
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    #blur = cv2.medianBlur(gray, 5)
-    #thresh = cv2.adaptiveThreshold(blur, 255 , cv2.ADAPTIVE_THRESH_GAUSSIAN_C, 
-    #cv2.THRESH_BINARY_INV,11,8)
 
     blur = cv2.medianBlur(gray, 13)
     thresh = cv2.adaptiveThreshold(blur, 255 , cv2.ADAPTIVE_THRESH_GAUSSIAN_C, 
     cv2.THRESH_BINARY_INV,51,4)
     
-    #thresh = cv2.bitwise_not(thresh)
-    cv2.imshow('tresh ', thresh)
-    key = cv2.waitKey(100)
+    if(debug):
+        cv2.imshow('tresh ', thresh)
+        key = cv2.waitKey(200)
+        cv2.imshow('gr ', image)
+        key = cv2.waitKey(200)
+        cv2.imshow('im ', gray)
+        key = cv2.waitKey(200)
 
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1,3))
     dilate = cv2.dilate(thresh, kernel, iterations=30)
-
 
     cnts = cv2.findContours(dilate, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     cnts = cnts[0] if len(cnts) == 2 else cnts[1]
@@ -117,12 +95,16 @@ def separate_characters(image, IMG_SIZE = 32, show_characters = False, save_char
         area = cv2.contourArea(c)
         if area > 500:
             x,y,w,h = cv2.boundingRect(c)
-            ROI = thresh[y:y+h, x:x+w], x #Final smoothen
+            ROI = thresh[y:y+h, x:x+w], x 
             ROI_list.append(ROI)
 
     ROI_in_order = sorted(ROI_list, key=lambda tup: tup[1])
 
     if(save_characters):
+        dir = 'Characters'
+        for f in os.listdir(dir):
+            os.remove(os.path.join(dir, f))
+
         for ROI, x in ROI_in_order:
             cv2.imwrite(os.path.join(PATH , 'ch_at_' + str(x) + ".jpg"), resize_image(ROI, (IMG_SIZE,IMG_SIZE)))
             
@@ -130,14 +112,14 @@ def separate_characters(image, IMG_SIZE = 32, show_characters = False, save_char
     #print(ROI_list)
     ROI_list = [cv2.blur((resize_image(item[0], (IMG_SIZE,IMG_SIZE))), (2,2)) for item in ROI_list]
 
-    if(show_characters):
-        stack = np.hstack(ROI_list)
-        cv2.imshow('Character', stack)
-        key = cv2.waitKey(1200)
+    if(debug or save_characters):
+        if(debug):
+            stack = np.hstack(ROI_list)
+            cv2.imshow('Character', stack)
+            key = cv2.waitKey(1200)
         for ROI in ROI_list:
-            #ROI = cv2.resize(ROI, (IMG_SIZE,IMG_SIZE), interpolation = cv2.INTER_AREA)
             if(save_characters):
-                 cv2.imwrite(os.path.join(PATH , 'ch_at_' + str(x) + ".jpg"), resize_image(ROI, (IMG_SIZE,IMG_SIZE)))
+                 cv2.imwrite(os.path.join(PATH , 'ch_at_' + str(x) + ".jpg"), ROI)
 
     return ROI_list
 
@@ -153,20 +135,14 @@ if __name__ == '__main__':
     print(args.path)
     image = cv2.imread(args.path)
     image = imutils.resize(image, height = 400)
-    #image = cv2.bitwise_not(image)
 
     #(thresh, image) = cv2.threshold(image, 127, 255, cv2.THRESH_BINARY)
 
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    #blur = cv2.medianBlur(gray, 5)
-    #thresh = cv2.adaptiveThreshold(blur, 255 , cv2.ADAPTIVE_THRESH_GAUSSIAN_C, 
-    #cv2.THRESH_BINARY_INV,11,8)
 
     blur = cv2.medianBlur(gray, 13)
     thresh = cv2.adaptiveThreshold(blur, 255 , cv2.ADAPTIVE_THRESH_GAUSSIAN_C, 
     cv2.THRESH_BINARY_INV,51,4)
-
-    #thresh = cv2.bitwise_not(thresh)
     cv2.imshow('tresh ', thresh)
 
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1,3)) #This kernel is to catch slender - sign
@@ -181,7 +157,7 @@ if __name__ == '__main__':
         area = cv2.contourArea(c)
         if area > 500:
             x,y,w,h = cv2.boundingRect(c)
-            #ROI = image[y:y+h, x:x+w], x
+            #ROI = gray[y:y+h, x:x+w], x
             ROI = thresh[y:y+h, x:x+w], x
             ROI_list.append(ROI)
             #print(ROI_list)
@@ -192,6 +168,10 @@ if __name__ == '__main__':
     
     save_characters = True
     if(save_characters):
+        dir = 'Characters'
+        for f in os.listdir(dir):
+            os.remove(os.path.join(dir, f))
+
         for count, ROI_t in enumerate(ROI_in_order):
             ROI, x = ROI_t
             cv2.imwrite(os.path.join(PATH , 'ch' + str(count) + ".jpg"), ROI)

@@ -10,7 +10,7 @@ from tensorflow import keras
 def calculate(img):
     print(type(img))
 
-    characters = separate_characters(img, IMG_SIZE = 32, show_characters = True, save_characters = True)
+    characters = separate_characters(img, IMG_SIZE = 32, save_characters = True, debug = True)
 
     #Loading model
     model = keras.models.load_model('Model')

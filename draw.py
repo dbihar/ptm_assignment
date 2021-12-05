@@ -1,29 +1,27 @@
 import tkinter as tk
+from warnings import catch_warnings
 from main import calculate
 import sys
 import os
 import cv2
-from PIL import Image
-
-def save_as_png(canvas,fileName):
-    # save postscipt image 
-    canvas.postscript(file = fileName + '.eps') 
-    # use PIL to convert to PNG 
-    img = Image.open(fileName + '.eps') 
-    img.save(fileName + '.png', 'png') 
+from PIL import Image, ImageGrab
+import numpy as np
 
 class DrawApp(tk.Tk):
     def __init__(self):
         tk.Tk.__init__(self)
+        self.canvas_counter = 0
         self.previous_x = self.previous_y = 0
         self.x = self.y = 0
         self.points_recorded = []
-        self.canvas = tk.Canvas(self, width=1024, height=420, bg = "white", cursor="cross")
+        self.canvas = tk.Canvas(self, width=1300, height=620, bg = "white", cursor="cross")
         self.canvas.pack(side="top", fill="both", expand=True)
         #self.button_print = tk.Button(self, text = "Display points", command = self.print_points)
         #self.button_print.pack(side="top", fill="both", expand=True)
-        self.button_clear = tk.Button(self, text = "Clear", command = self.clear_all)
-        self.button_calculate = tk.Button(self, text = "Calculate", command = self.calculate)
+        import tkinter.font as font
+        buttonFont = font.Font(family='Helvetica', size=16, weight='bold')
+        self.button_clear = tk.Button(self, text = "Clear", command = self.clear_all, font = buttonFont)
+        self.button_calculate = tk.Button(self, text = "Calculate", command = self.calculate, font = buttonFont)
         self.button_clear.pack(side="top", fill="both", expand=True)
         self.button_calculate.pack(side="top", fill="both", expand=True)
         self.canvas.bind("<Motion>", self.tell_me_where_you_are)
@@ -34,8 +32,19 @@ class DrawApp(tk.Tk):
 
     def calculate(self):
         try:
-            save_as_png(self.canvas, "shots/shot_canvas")
+            try:
+                os.remove("shots/shot_canvas.png") 
+            except FileNotFoundError:
+                pass
+            
+            x, y = self.canvas.winfo_rootx(), self.canvas.winfo_rooty()
+            w, h = self.canvas.winfo_width(), self.canvas.winfo_height()
+            # take a snapshot on the canvas and save the image to file
+            img = ImageGrab.grab((x, y, x+w, y+h)).convert('RGB') 
+            opencvImage = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
+            img.save('shots/shot_canvas.png', 'png')
             img = cv2.imread("shots/shot_canvas.png")
+            #calculate(opencvImage)
             calculate(img)
         except KeyboardInterrupt:
             print('Expression not correct')
@@ -64,7 +73,7 @@ class DrawApp(tk.Tk):
         self.x = event.x
         self.y = event.y
         self.canvas.create_line(self.previous_x, self.previous_y, 
-                                self.x, self.y,fill="black", width=20)
+                                self.x, self.y,fill="black", width=17)
         self.points_recorded.append(self.previous_x)
         self.points_recorded.append(self.previous_y)
         self.points_recorded.append(self.x)     
