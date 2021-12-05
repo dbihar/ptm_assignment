@@ -2,3 +2,6 @@
 *.pdf
 *Model*
 *.pyc
+*.png
+*.eps
+*.vscode

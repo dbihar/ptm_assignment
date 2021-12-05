@@ -99,25 +99,25 @@ def separate_characters(image, IMG_SIZE = 32, show_characters = False, save_char
     blur = cv2.medianBlur(gray, 13)
     thresh = cv2.adaptiveThreshold(blur, 255 , cv2.ADAPTIVE_THRESH_GAUSSIAN_C, 
     cv2.THRESH_BINARY_INV,51,4)
-
+    
     #thresh = cv2.bitwise_not(thresh)
     cv2.imshow('tresh ', thresh)
     key = cv2.waitKey(100)
 
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1,3))
-    dilate = cv2.dilate(thresh, kernel, iterations=20)
+    dilate = cv2.dilate(thresh, kernel, iterations=30)
+
 
     cnts = cv2.findContours(dilate, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     cnts = cnts[0] if len(cnts) == 2 else cnts[1]
 
     ROI_list = []
 
-
     for c in cnts:
         area = cv2.contourArea(c)
         if area > 500:
             x,y,w,h = cv2.boundingRect(c)
-            ROI = thresh[y:y+h, x:x+w], x
+            ROI = thresh[y:y+h, x:x+w], x #Final smoothen
             ROI_list.append(ROI)
 
     ROI_in_order = sorted(ROI_list, key=lambda tup: tup[1])
@@ -128,7 +128,7 @@ def separate_characters(image, IMG_SIZE = 32, show_characters = False, save_char
             
     ROI_list = list(ROI_in_order)
     #print(ROI_list)
-    ROI_list = [(resize_image(item[0], (IMG_SIZE,IMG_SIZE))) for item in ROI_list]
+    ROI_list = [cv2.blur((resize_image(item[0], (IMG_SIZE,IMG_SIZE))), (2,2)) for item in ROI_list]
 
     if(show_characters):
         stack = np.hstack(ROI_list)
@@ -150,6 +150,7 @@ if __name__ == '__main__':
     parser.add_argument( 'path', action = 'store', type = str, help = 'Path to image file.' )
     args = parser.parse_args()
 
+    print(args.path)
     image = cv2.imread(args.path)
     image = imutils.resize(image, height = 400)
     #image = cv2.bitwise_not(image)
@@ -169,7 +170,7 @@ if __name__ == '__main__':
     cv2.imshow('tresh ', thresh)
 
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1,3)) #This kernel is to catch slender - sign
-    dilate = cv2.dilate(thresh, kernel, iterations=2)
+    dilate = cv2.dilate(thresh, kernel, iterations=30)
 
     cnts = cv2.findContours(dilate, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     cnts = cnts[0] if len(cnts) == 2 else cnts[1]
@@ -185,17 +186,21 @@ if __name__ == '__main__':
             ROI_list.append(ROI)
             #print(ROI_list)
 
+    ROI_list = [(cv2.blur((resize_image(item[0], (IMG_SIZE,IMG_SIZE))), (2,2)), item[1]) for item in ROI_list]
     ROI_in_order = sorted(ROI_list, key=lambda tup: tup[1])
 
+    
+    save_characters = True
+    if(save_characters):
+        for count, ROI_t in enumerate(ROI_in_order):
+            ROI, x = ROI_t
+            cv2.imwrite(os.path.join(PATH , 'ch' + str(count) + ".jpg"), ROI)
+            
+
+    ROI_list = [ROI for ROI, x in ROI_in_order]
     stack = np.hstack(ROI_list)
     cv2.imshow('Character', stack)
     key = cv2.waitKey(5000)
-
-    save_characters = True
-    if(save_characters):
-        for ROI, x in ROI_in_order:
-            cv2.imwrite(os.path.join(PATH , 'ch_at_' + str(x) + ".jpg"), resize_image(ROI, (IMG_SIZE,IMG_SIZE)))
-            
 
     """
     img_gray = cv2.cvtColor(ROI, cv2.COLOR_BGR2GRAY)

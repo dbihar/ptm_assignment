@@ -9,7 +9,7 @@ def get_class_names():
     class_names = ['0', '1', '(', ')', '+', '-', '', '/', '×', '2', '3', '4', '5', '6', '7', '8', '9']
     return class_names
 
-def classify_image(img, model, IMG_SIZE = 32, debug = False):
+def classify_image(img, model, IMG_SIZE = 32, debug = True):
     #import cv2
     #img = cv2.imread('three.png')
     #plt.imshow(img)

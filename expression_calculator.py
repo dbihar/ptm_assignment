@@ -127,7 +127,7 @@ def eval_expression_list(expression):
         #print(' '.join(expression)) 
 
         count = 0
-        while count < len(expression) - 1:
+        while count < len(expression) - 2:
             if expression[count] == "(":
                 if expression[count + 2] == ")":
                     del expression[count + 2]
@@ -197,7 +197,7 @@ def eval_expression_list(expression):
            
         if emergency_count >= 1000:
             print("Operation was too long or was bugged")
-            exit()
+            return nan
     return expression[0]
 
 if __name__ == '__main__':
