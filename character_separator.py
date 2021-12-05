@@ -13,7 +13,7 @@ def resize_image(img, size=(32,32)):
     
     if h > w * 2.8: 
         print("Extreme slender")
-        img = cv2.resize(img, (12,27), cv2.INTER_CUBIC)
+        img = cv2.resize(img, (15,29), cv2.INTER_NEAREST)
         h, w = img.shape[:2]
         new_image_width = 32
         new_image_height = 32
@@ -30,7 +30,7 @@ def resize_image(img, size=(32,32)):
 
     if h > w: 
         print("Normal slender")
-        img = cv2.resize(img, (23,27), cv2.INTER_CUBIC)
+        img = cv2.resize(img, (25,29), cv2.INTER_NEAREST)
         h, w = img.shape[:2]
         new_image_width = 32
         new_image_height = 32
@@ -46,10 +46,10 @@ def resize_image(img, size=(32,32)):
         return result
 
     print("Wide character")
-    fact = w / 20.
-    w = 13
+    fact = w / 25.
+    w = 16
     h = int(float(h) / fact)
-    img = cv2.resize(img, (w,h), cv2.INTER_CUBIC)
+    img = cv2.resize(img, (w,h), cv2.INTER_NEAREST)
 
     new_image_width = 15
     new_image_height = 32
@@ -62,7 +62,7 @@ def resize_image(img, size=(32,32)):
 
     # copy img image into center of result image
     result[y_center:y_center+h, x_center:x_center+w] = img
-    result = cv2.resize(result, (32,32), cv2.INTER_CUBIC)
+    result = cv2.resize(result, (32,32), cv2.INTER_NEAREST)
     return result
 
 def separate_characters(image, IMG_SIZE = 32, save_characters = False, debug = False):
@@ -96,7 +96,10 @@ def separate_characters(image, IMG_SIZE = 32, save_characters = False, debug = F
         area = cv2.contourArea(c)
         if area > 500:
             x,y,w,h = cv2.boundingRect(c)
-            ROI = thresh[y:y+h, x:x+w], x 
+            im_tmp = thresh[y:y+h, x:x+w]
+            _, im_tmp = cv2.threshold(im_tmp, 200, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
+            ROI = im_tmp, x 
+
             ROI_list.append(ROI)
 
     ROI_in_order = sorted(ROI_list, key=lambda tup: tup[1])
@@ -111,7 +114,7 @@ def separate_characters(image, IMG_SIZE = 32, save_characters = False, debug = F
             
     ROI_list = list(ROI_in_order)
     #print(ROI_list)
-    ROI_list = [cv2.blur((resize_image(item[0], (IMG_SIZE,IMG_SIZE))), (2,2)) for item in ROI_list]
+    ROI_list = [cv2.blur((resize_image(item[0], (IMG_SIZE,IMG_SIZE))), (2,2)) for item in ROI_list] #Final blur off
 
     if(debug or save_characters):
         if(debug):
@@ -159,7 +162,9 @@ if __name__ == '__main__':
         if area > 500:
             x,y,w,h = cv2.boundingRect(c)
             #ROI = gray[y:y+h, x:x+w], x
-            ROI = thresh[y:y+h, x:x+w], x
+            im_tmp = thresh[y:y+h, x:x+w]
+            (_, im_tmp) = cv2.threshold(im_tmp, 127, 255, cv2.THRESH_BINARY)
+            ROI = im_tmp, x
             ROI_list.append(ROI)
             #print(ROI_list)
 

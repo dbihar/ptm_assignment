@@ -29,7 +29,7 @@ class DrawApp(tk.Tk):
         self.canvas.delete("all")
 
     def calculate(self):
-        try:
+        try:          
             x, y = self.canvas.winfo_rootx(), self.canvas.winfo_rooty()
             w, h = self.canvas.winfo_width(), self.canvas.winfo_height()
             # take a snapshot on the canvas and save the image to file
