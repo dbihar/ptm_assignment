@@ -2,6 +2,8 @@ import tensorflow as tf
 import numpy as np
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten, Conv2D, MaxPooling2D
+from tensorflow.keras.optimizers import SGD
+
 #from sklearn.model_selection import train_test_split
 import argparse
 
@@ -82,7 +84,7 @@ if __name__ == '__main__':
 
     ### First Convolution Layer
     # 64 -> number of filters, (3,3) -> size of each kernal,
-    model.add(Conv2D(64, (3,3), input_shape = x_trainr.shape[1:])) # For first layer we have to mention the size of input
+    model.add(Conv2D(256, (3,3), input_shape = x_trainr.shape[1:])) # For first layer we have to mention the size of input
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2,2)))
 
@@ -91,11 +93,6 @@ if __name__ == '__main__':
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2,2)))
 
-    ### Fully connected layer 0 #dan add
-    model.add(Flatten())
-    model.add(Dense(64))
-    model.add(Activation("relu"))
-
     ### Third Convolution Layer
     model.add(Conv2D(64, (3,3)))
     model.add(Activation('relu'))
@@ -103,7 +100,7 @@ if __name__ == '__main__':
 
     ### Fully connected layer 1
     model.add(Flatten())
-    model.add(Dense(64))
+    model.add(Dense(256)) 
     model.add(Activation("relu"))
 
     ### Fully connected layer 2
@@ -113,11 +110,14 @@ if __name__ == '__main__':
     ### Fully connected layer 3, output layer must be equal to number of classes
     model.add(Dense(17))
     model.add(Activation("softmax"))
-
+    
     model.summary()
     model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=['accuracy'])
     #model.fit(x_trainr, y_train, epochs=4, validation_split = 0.3)
-    model.fit(x_trainr, y_train, epochs=2, validation_split = 0.3)
+
+    class_weight = {0: 1., 1: 40., 2: 1., 3: 1., 4: 1., 5: 1., 6: 1., 7: 1., 8: 1., 9: 1., 10: 50.,\
+                    11: 50.,12 : 50., 13: 50., 14: 50., 15: 50., 16: 8.}
+    model.fit(x_trainr, y_train, epochs=7, validation_split = 0.3, class_weight=class_weight)
 
     test_loss, test_acc = model.evaluate(x_testr, y_test)
     print("Test Loss on 10,000 test samples", test_loss)

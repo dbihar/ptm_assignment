@@ -4,7 +4,7 @@ import glob
 import PySimpleGUI as sg
 from PIL import Image, ImageTk
 import shutil
-
+import os
 from google.protobuf.descriptor import EnumDescriptor
 
 # absolute path
@@ -39,11 +39,11 @@ def main():
         ],
         [
             sg.Button("Prev"),
-            sg.Button("Next --> move to 1"),
-            sg.Button("Next --> move to SLASH")
+            sg.Button("Next --> keep"),
+            sg.Button("Next --> delete")
         ]
     ]
-    window = sg.Window("Image Viewer", elements, size=(475, 475))
+    window = sg.Window("Image Viewer", elements, size=(475, 475), return_keyboard_events=True)
     images = []
     location = 0
     while True:
@@ -54,13 +54,13 @@ def main():
             images = parse_folder(values["file"])
             if images:
                 load_image(images[0], window)
-        if (event == "Next --> move to 1") and images:
+        if (event == "Next --> keep" or event == 'k') and images:
             if location == len(images) - 1:
                 print("EOF")
             else:
                 location += 1
             load_image(images[location], window)
-        if(event == "Next --> move to SLASH") and images:
+        if(event == "Next --> delete" or event == 'l') and images:
             if location == len(images) - 1:
                 print("EOF")
             else:    
@@ -69,8 +69,9 @@ def main():
                 dst_path = images[location][0:str(images[location]).rfind('/')]
                 dst_path = dst_path[0:str(dst_path).rfind('/')]
                 dst_path = dst_path + "/15" + name_im
-                print("Moved ", images[location], " dst = ", dst_path)
-                shutil.move(src_path, dst_path)
+                os.remove(src_path)
+                print("Deleted ", images[location])
+                #shutil.move(src_path, dst_path)
                 location += 1
             load_image(images[location], window)
         if event == "Prev" and images:
