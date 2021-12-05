@@ -82,12 +82,7 @@ if __name__ == '__main__':
 
     ### First Convolution Layer
     # 64 -> number of filters, (3,3) -> size of each kernal,
-    model.add(Conv2D(64, (9,9), input_shape = x_trainr.shape[1:])) # For first layer we have to mention the size of input
-    model.add(Activation('relu'))
-    model.add(MaxPooling2D(pool_size=(2,2)))
-
-
-    model.add(Conv2D(64, (3,3)))
+    model.add(Conv2D(64, (3,3), input_shape = x_trainr.shape[1:])) # For first layer we have to mention the size of input
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2,2)))
 
@@ -95,6 +90,11 @@ if __name__ == '__main__':
     model.add(Conv2D(64, (3,3)))
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2,2)))
+
+    ### Fully connected layer 0 #dan add
+    model.add(Flatten())
+    model.add(Dense(64))
+    model.add(Activation("relu"))
 
     ### Third Convolution Layer
     model.add(Conv2D(64, (3,3)))
