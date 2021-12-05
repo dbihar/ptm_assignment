@@ -32,20 +32,20 @@ class DrawApp(tk.Tk):
 
     def calculate(self):
         try:
-            try:
-                os.remove("shots/shot_canvas.png") 
-            except FileNotFoundError:
-                pass
+            #try:
+            #    os.remove("shots/shot_canvas.png") 
+            #except FileNotFoundError:
+            #    pass
             
             x, y = self.canvas.winfo_rootx(), self.canvas.winfo_rooty()
             w, h = self.canvas.winfo_width(), self.canvas.winfo_height()
             # take a snapshot on the canvas and save the image to file
-            img = ImageGrab.grab((x, y, x+w, y+h)).convert('RGB') 
+            img = ImageGrab.grab((x+10, y+10, x+w-10, y+h-10)).convert('RGB') 
             opencvImage = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
             img.save('shots/shot_canvas.png', 'png')
-            img = cv2.imread("shots/shot_canvas.png")
+            #img = cv2.imread("shots/shot_canvas.png")
             #calculate(opencvImage)
-            calculate(img)
+            calculate(opencvImage)
         except KeyboardInterrupt:
             print('Expression not correct')
             try:

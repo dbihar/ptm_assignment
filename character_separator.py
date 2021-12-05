@@ -66,6 +66,7 @@ def resize_image(img, size=(32,32)):
     return result
 
 def separate_characters(image, IMG_SIZE = 32, save_characters = False, debug = False):
+    print("Image_type:", type(image), " Shape:", image.shape)
     PATH = 'Characters'
     #image = imutils.resize(image, height = 1000)
     image = imutils.resize(image, height = 400)
@@ -78,12 +79,12 @@ def separate_characters(image, IMG_SIZE = 32, save_characters = False, debug = F
     if(debug):
         cv2.imshow('tresh ', thresh)
         key = cv2.waitKey(200)
-        cv2.imshow('gr ', image)
-        key = cv2.waitKey(200)
-        cv2.imshow('im ', gray)
-        key = cv2.waitKey(200)
+        #cv2.imshow('gr ', image)
+        #key = cv2.waitKey(200)
+        #cv2.imshow('im ', gray)
+        #key = cv2.waitKey(200)
 
-    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1,3))
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1,3)) #Tune this to get good separation
     dilate = cv2.dilate(thresh, kernel, iterations=30)
 
     cnts = cv2.findContours(dilate, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
