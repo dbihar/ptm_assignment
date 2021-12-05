@@ -16,8 +16,6 @@ class DrawApp(tk.Tk):
         self.points_recorded = []
         self.canvas = tk.Canvas(self, width=1300, height=620, bg = "white", cursor="cross")
         self.canvas.pack(side="top", fill="both", expand=True)
-        #self.button_print = tk.Button(self, text = "Display points", command = self.print_points)
-        #self.button_print.pack(side="top", fill="both", expand=True)
         import tkinter.font as font
         buttonFont = font.Font(family='Helvetica', size=16, weight='bold')
         self.button_clear = tk.Button(self, text = "Clear", command = self.clear_all, font = buttonFont)
@@ -32,19 +30,12 @@ class DrawApp(tk.Tk):
 
     def calculate(self):
         try:
-            #try:
-            #    os.remove("shots/shot_canvas.png") 
-            #except FileNotFoundError:
-            #    pass
-            
             x, y = self.canvas.winfo_rootx(), self.canvas.winfo_rooty()
             w, h = self.canvas.winfo_width(), self.canvas.winfo_height()
             # take a snapshot on the canvas and save the image to file
             img = ImageGrab.grab((x+10, y+10, x+w-10, y+h-10)).convert('RGB') 
             opencvImage = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
             img.save('shots/shot_canvas.png', 'png')
-            #img = cv2.imread("shots/shot_canvas.png")
-            #calculate(opencvImage)
             calculate(opencvImage)
         except KeyboardInterrupt:
             print('Expression not correct')
