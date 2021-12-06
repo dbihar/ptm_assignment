@@ -134,10 +134,26 @@ if __name__ == '__main__':
     model.fit(x_trainr, y_train, epochs=4, validation_split = 0.2, class_weight=class_weights)
 
     test_loss, test_acc = model.evaluate(x_testr, y_test)
-    print("Test Loss on 10,000 test samples", test_loss)
-    print("Test Accuracy on 10,000 test samples", test_acc)
+    print("Test Loss on test samples", test_loss)
+    print("Test Accuracy on test samples", test_acc)
 
     #Predictions
 
     # Saving a Keras model:
     model.save('Model')
+
+    #Running metrics
+    from sklearn.metrics import ConfusionMatrixDisplay
+    from sklearn.metrics import confusion_matrix
+    import matplotlib.pyplot as plt
+
+    y_pred = model.predict(x_test)
+
+    labels = ['0', "1", '(', ')', '+', '-', '/', 'x', '2', '3', '4', '5', '6', '7', '8', '9']
+
+    cm = confusion_matrix(y_test, y_pred)
+
+    disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=labels)
+
+    disp.plot(cmap=plt.cm.Blues)
+    plt.show()
