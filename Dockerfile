@@ -1,4 +1,5 @@
 FROM python:3
+RUN mkdir photomath
 ADD draw.py /photomath
 ADD flask_camera.py /photomath
 ADD requirements.txt /photomath

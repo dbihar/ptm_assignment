@@ -1,7 +1,10 @@
-*.jpg
 *.pdf
 *Model*
 *.pyc
-*.png
+*Data/*.png
+*Data/*jpg
+*Data*
+*Characters*
+*shots*
 *.eps
 *.vscode

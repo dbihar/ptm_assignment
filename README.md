@@ -24,6 +24,9 @@ Interfaces include:
 	$ python3 draw.py
 	
 	Result will be shown in a messagebox
+	
+	![plot](./Assets/draw1.png)
+	![plot](./Assets/draw3.png)
 
 ### Web app:
 
