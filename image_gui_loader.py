@@ -10,7 +10,7 @@ import sys
 from tkinter import messagebox
 from numpy import isnan, float
 
-file_types = [("JPEG (*.jpg)", "*.jpg", "*.jpeg"),
+file_types = [("JPEG (*.jpg)", "*.jpg"),
               ("All files (*.*)", "*.*")]
 def image_load():
     layout = [

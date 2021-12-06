@@ -19,17 +19,18 @@ Interfaces include:
 	
 	Result will be shown in a messagebox
 
+![plot](./Assets/img_load1.png)
+![plot](./Assets/img_load2.png)
+![plot](./Assets/img_load3.png)
+
 ### Draw GUI:
 
 	$ python3 draw.py
 	
 	Result will be shown in a messagebox
 	
-
-[alt text](https://github.com/dbihar/ptm_assignment/blob/master/Assets/draw1.png?raw=true)
-[plot](./Assets/draw1.png)
-[plot](./Assets/draw3.png)
-
+![plot](./Assets/draw1.png)
+![plot](./Assets/draw3.png)
 
 ### Web app:
 
