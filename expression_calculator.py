@@ -1,5 +1,4 @@
 import argparse
-import re
 
 from numpy import nan
 

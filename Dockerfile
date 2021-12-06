@@ -1,6 +1,7 @@
 # Our base image
-FROM tensorflow/tensorflow:2.2.3-gpu
+FROM tensorflow/tensorflow
 
+RUN apt-get install python3-pip
 RUN mkdir photomath
 ADD draw.py /photomath
 ADD flask_camera.py /photomath
@@ -21,8 +22,6 @@ RUN pip3 install --upgrade pip
 RUN pip3 install -r requirements.txt
 
 RUN apt-get update && apt-get install -y python3-opencv
+RUN apt-get install python3-tk
 RUN pip3 install opencv-python
-
-#RUN sudo pip3 uninstall protobuf
-#RUN pip3 install --upgrade https://storage.googleapis.com/tensorflow/mac/cpu/tensorflow-0.12.0-py3-none-any.whl
-#RUN pip3 install -U protobuf==3.0.0b2
+RUN pip3 install scikit-learn

@@ -12,6 +12,7 @@ Interfaces include:
 
 	$ pip3 install -r requirements.txt
 	$ pip3 install tensorflow==2.7.0
+	$ apt-get install python3-tk
 	
 ### Image loader GUI:
 
@@ -74,14 +75,22 @@ Training data needs to be in folder data, while our dataset can be obtained at:
 ### Building docker image:
 Build docker image with Dockerfile:
 
-	$ sudo docker build -t docker-pht-daniel .
+	$ sudo docker build -t docker-pmt-daniel .
 	$ sudo chmod 666 /var/run/docker.sock
 	
 ## Downloading docker image:
 
 	
 ## Running from docker container
+
+Non GUI scripts you can run using (only change script name at the end):
+	$ docker run -it --rm docker_pmt_daniel python3 /photomath/expression_calculator.py "2+2"
+
+Now you can run all GUI scripts using (just replace name of the script at the end):
 	
-Now you can run all scripts using (just replace name of the script at the end):
+	$ docker run -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix:rw -v $(pwd)/app:/app --rm docker-pmt-daniel python3 /photomath/draw.py
 	
-	$ docker run -u=$(id -u $USER):$(id -g $USER) -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix:rw -v $(pwd)/app:/app --rm docker-pht-daniel python3 /photomath/draw.py
+	
+## PS.
+
+Since this project is quick prototype, I tried to fit as much functionality in as little code possible. That's why the code is functional in nature and not o.o. so that we can avoid unnecessary abstraction. All scripts are connected trough "main. py" and links to dataset is provided.
