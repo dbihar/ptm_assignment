@@ -10,15 +10,15 @@ Interfaces include:
 
 ### Image loader GUI:
 
-	$python3 image_gui_loader.py
+	$ python3 image_gui_loader.py
 
 ### Draw GUI:
 
-	$python3 draw.py
+	$ python3 draw.py
 
 ### Web app:
 
-	$python3 flask_camera.py
+	$ python3 flask_camera.py
 	
 	Then open http://127.0.0.1:5000/
 	
@@ -28,19 +28,19 @@ Interfaces include:
 
 Character classifier takes images from "./Characters" folder and prints prediction in commandline
 
-	$python3 character_classifier_detect.py
+	$ python3 character_classifier_detect.py
 
 ### Character separator module
 
 Character separator take one string argument which is path to image, and saves cropped output in folder "./Characters"
 
-	$python3 character_separator.py ./shots/shot_canvas.png
+	$ python3 character_separator.py ./shots/shot_canvas.png
 
 ### Expression module
 
 Expression module takes string as first positional argument and evaluates it. Allowed characters are 0-9, +, *, -, /, (, )
 
-	$python3 expression_calculator.py "2 + 3 - ( 9 * 2 ) / 2 - ( 7 - 20 )"
+	$ python3 expression_calculator.py "2 + 3 - ( 9 * 2 ) / 2 - ( 7 - 20 )"
 
 ## Training data download and training model
 
