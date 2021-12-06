@@ -51,7 +51,7 @@ def resize_image(img, size=(32,32)):
     h = int(float(h) / fact)
     img = cv2.resize(img, (w,h), cv2.INTER_NEAREST)
 
-    new_image_width = 15
+    new_image_width = 16
     new_image_height = 32
     color = (0)
     result = np.full((new_image_height,new_image_width), color, dtype=np.uint8)

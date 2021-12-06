@@ -96,21 +96,21 @@ if __name__ == '__main__':
     model.add(MaxPooling2D(pool_size=(2,2)))
 
     ### Third Convolution Layer
-    model.add(Conv2D(256, (3,3)))
+    model.add(Conv2D(64, (3,3)))
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2,2)))
 
     ### Fully connected layer 1
     model.add(Flatten())
-    model.add(Dense(256)) 
+    model.add(Dense(64)) 
     model.add(Activation("relu"))
 
     ### Fully connected layer 2
-    model.add(Dense(64))
+    model.add(Dense(32))
     model.add(Activation("relu"))
 
     ### Fully connected layer 3, output layer must be equal to number of classes
-    model.add(Dense(17))
+    model.add(Dense(16))
     model.add(Activation("softmax"))
     
     model.summary()
@@ -125,10 +125,10 @@ if __name__ == '__main__':
     class_weights = dict(zip(np.unique(y_train), class_weights))
 
     print("Weights", class_weights, " Keys ", class_weights.keys())
-    x = {6:0}
-    x.update(class_weights)
-    class_weights = x
-    class_names = ['0', '1', '(', ')', '+', '-', '', '/', 'x', '2', '3', '4', '5', '6', '7', '8', '9']
+    #x = {6:0}
+    #x.update(class_weights)
+    #class_weights = x
+    class_names = ['0', "1", '(', ')', '+', '-', '/', 'x', '2', '3', '4', '5', '6', '7', '8', '9']
     model.fit(x_trainr, y_train, epochs=3, validation_split = 0.3, class_weight=class_weights)
 
     test_loss, test_acc = model.evaluate(x_testr, y_test)
@@ -140,10 +140,5 @@ if __name__ == '__main__':
     predictions = model.predict([x_testr])
     print(predictions)
 
-    plt.imshow(x_test[0])
-    print(np.argmax(predictions[0]))
-
-
-    #Saving_model
     # Saving a Keras model:
     model.save('Model')

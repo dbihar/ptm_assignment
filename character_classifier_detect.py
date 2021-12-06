@@ -6,7 +6,7 @@ import numpy as np
 import argparse
 
 def get_class_names():
-    class_names = ['0', '1', '(', ')', '+', '-', '', '/', 'x', '2', '3', '4', '5', '6', '7', '8', '9']
+    class_names = ['0', "1", '(', ')', '+', '-', '/', 'x', '2', '3', '4', '5', '6', '7', '8', '9']
     return class_names
 
 def classify_image(img, model, IMG_SIZE = 32, debug = True):
@@ -80,15 +80,13 @@ if __name__ == '__main__':
         #Preview data
 
         class_names = validation.class_names
+        print("Class names", class_names)
         class_names[class_names.index("10")] = "("
         class_names[class_names.index("11")] = ")"
         class_names[class_names.index("12")] = "+"
         class_names[class_names.index("13")] = "-"
-        #class_names[class_names.index("14")] = "2"
-        class_names[class_names.index("15")] = "/"
-        class_names[class_names.index("16")] = "x"
-        #class_names[class_names.index("17")] = "4"
-        #class_names[class_names.index("18")] = "7"
+        class_names[class_names.index("14")] = "/"
+        class_names[class_names.index("15")] = "x"
 
         import matplotlib.pyplot as plt
 
@@ -107,7 +105,7 @@ if __name__ == '__main__':
     #print(np.argmax(predictions[0]))
 
     else:
-        class_names = ['0', '1', '(', ')', '+', '-', '', '/', 'x', '2', '3', '4', '5', '6', '7', '8', '9']
+        class_names = get_class_names()
 
         from os import listdir
         from os.path import isfile, join
