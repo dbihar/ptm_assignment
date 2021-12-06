@@ -8,11 +8,25 @@ Interfaces include:
 
 ## Running stand alone GUI apps
 
+### Image loader GUI:
+
+	$python3 image_gui_loader.py
+
+### Draw GUI:
+
+	$python3 draw.py
+
+### Web app:
+
+	$python3 flask_camera.py
+	
+	Then open http://127.0.0.1:5000/
+	
 ## Running modules from command line
 
 ### Character classifier module
 
-Character classifier takes images from "./Characters" folderand prints prediction in commandline
+Character classifier takes images from "./Characters" folder and prints prediction in commandline
 
 	$python3 character_classifier_detect.py
 

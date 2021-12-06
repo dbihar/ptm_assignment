@@ -2,14 +2,15 @@ import tensorflow as tf
 import numpy as np
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten, Conv2D, MaxPooling2D
-from tensorflow.keras.optimizers import SGD
 from sklearn.utils import class_weight
-
 
 #from sklearn.model_selection import train_test_split
 import argparse
 
 if __name__ == '__main__':
+    import os
+    import sys
+    os.chdir(sys.path[0])
     parser = argparse.ArgumentParser(description = '')
     parser.set_defaults(debug = False)
     parser.add_argument('--debug', dest = "debug", help='Program will print and plot relevant data', action='store_true')

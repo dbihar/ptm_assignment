@@ -82,4 +82,7 @@ def main():
             load_image(images[location], window)
     window.close()
 if __name__ == "__main__":
+    import os
+    import sys
+    os.chdir(sys.path[0])
     main()

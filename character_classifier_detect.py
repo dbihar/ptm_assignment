@@ -48,6 +48,10 @@ def classify_image(img, model, IMG_SIZE = 32, debug = True):
     return (class_names[np.argmax(predictions[0])])
 
 if __name__ == '__main__':
+    import os
+    import sys
+    os.chdir(sys.path[0])
+    
     parser = argparse.ArgumentParser(description = '')
     parser.set_defaults(debug = False)
     parser.add_argument('--debug', dest = "debug", help='Program will print and plot relevant data', action='store_true')

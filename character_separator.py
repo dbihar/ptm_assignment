@@ -129,7 +129,10 @@ def separate_characters(image, IMG_SIZE = 32, save_characters = False, debug = F
 
 if __name__ == '__main__':
     IMG_SIZE = 32
-
+    import os
+    import sys
+    os.chdir(sys.path[0])
+    
     PATH = 'Characters'
     parser = argparse.ArgumentParser(description = '')
     parser.set_defaults(path = "img3.jpg")
