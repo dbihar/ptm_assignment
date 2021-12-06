@@ -77,9 +77,10 @@ Build docker image with Dockerfile:
 	$ sudo docker build -t docker-pht-daniel .
 	$ sudo chmod 666 /var/run/docker.sock
 	
-### Downloading docker image:
+## Downloading docker image:
 
 	
+## Running from docker container
 	
 Now you can run all scripts using (just replace name of the script at the end):
 	
