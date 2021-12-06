@@ -5,3 +5,11 @@ Interfaces include:
 1) A GUI image loader in executable script "image_gui_loader.py"
 2) A GUI drawing app input in executable script "draw.py"
 3) A Web Flask app in executable script "flask_camera.py"
+
+## Running stand alone GUI apps
+
+## Running modules from command line
+
+## Training data download and training model
+
+## Docker
