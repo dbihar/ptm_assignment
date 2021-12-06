@@ -93,12 +93,17 @@ Set up host PC with:
 
 Non GUI scripts you can run using (only change script name at the end):
 	
-	$ docker run -it --rm docker_pmt_daniel python3 /photomath/expression_calculator.py "2+2"
+	$ docker run -it -v $(pwd)/app:/app -v $(pwd):/photomath2 --rm docker_pmt_daniel python3 /photomath2/expression_calculator.py "2+2"
 
-Now you can run all GUI scripts using (just replace name of the script at the end):
+Now you can run all GUI scripts using (just replace name of the script at the end, and run from the git repo's root folder):
 	
-	$ docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix:rw -v $(pwd)/app:/app --rm docker_pmt_daniel python3 /photomath/draw.py
+	$ docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix:rw -v $(pwd)/app:/app -v $(pwd):/photomath2 --rm docker_pmt_daniel python3 photomath2/draw.py
+
 	
+	or
+	
+	$ docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix:rw -v $(pwd)/app:/app -v $(pwd):/photomath2 --rm docker_pmt_daniel python3 photomath2/image_gui_loader.py
+
 	
 ## PS.
 

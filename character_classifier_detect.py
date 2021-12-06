@@ -44,7 +44,7 @@ if __name__ == '__main__':
     from tensorflow import keras
     model = keras.models.load_model('Model')
 
-    validation_bool = False
+    validation_bool = True
 
     if(validation_bool):
         validation = tf.keras.preprocessing.image_dataset_from_directory(
@@ -74,9 +74,10 @@ if __name__ == '__main__':
 
         import matplotlib.pyplot as plt
 
+
         plt.figure(figsize=(10, 10))
         start_im = 0
-        for j in range(10):
+        for j in range(2):
             start_im = start_im + 9
             for i in range(9):
                 ax = plt.subplot(3, 3, i + 1)
@@ -85,6 +86,22 @@ if __name__ == '__main__':
                 plt.axis("off")
             plt.show()
  
+        #Running metrics
+        from sklearn.metrics import ConfusionMatrixDisplay
+        from sklearn.metrics import confusion_matrix
+        import matplotlib.pyplot as plt
+
+        y_pred = model.predict(x_test)
+        y_pred = [np.argmax(pred) for pred in y_pred]
+        labels = ['0', "1", '(', ')', '+', '-', '/', 'x', '2', '3', '4', '5', '6', '7', '8', '9']
+
+        cm = confusion_matrix(y_test, y_pred)
+
+        disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=labels)
+
+        disp.plot(cmap=plt.cm.Blues)
+        plt.show()
+
     #plt.imshow(x_test[0])
     #print(np.argmax(predictions[0]))
 

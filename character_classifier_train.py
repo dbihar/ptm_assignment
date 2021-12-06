@@ -148,7 +148,7 @@ if __name__ == '__main__':
     import matplotlib.pyplot as plt
 
     y_pred = model.predict(x_test)
-
+    y_pred = [np.argmax(pred) for pred in y_pred]
     labels = ['0', "1", '(', ')', '+', '-', '/', 'x', '2', '3', '4', '5', '6', '7', '8', '9']
 
     cm = confusion_matrix(y_test, y_pred)

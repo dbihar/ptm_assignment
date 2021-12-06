@@ -100,12 +100,18 @@ def separate_characters(image, IMG_SIZE = 32, save_characters = False, debug = F
     ROI_in_order = sorted(ROI_list, key=lambda tup: tup[1])
 
     if(save_characters):
-        dir = 'Characters'
-        for f in os.listdir(dir):
-            os.remove(os.path.join(dir, f))
+        import os
+        import sys
+        os.chdir(sys.path[0])
+        try:
+            dir = 'Characters'
+            for f in os.listdir(dir):
+                os.remove(os.path.join(dir, f))
 
-        for ROI, x in ROI_in_order:
-            cv2.imwrite(os.path.join(PATH , 'ch_at_' + str(x) + ".jpg"), resize_image(ROI, (IMG_SIZE,IMG_SIZE)))
+            for ROI, x in ROI_in_order:
+                cv2.imwrite(os.path.join(PATH , 'ch_at_' + str(x) + ".jpg"), resize_image(ROI, (IMG_SIZE,IMG_SIZE)))
+        except FileNotFoundError:
+            print("[WARN] No Character directory")
             
     ROI_list = list(ROI_in_order)
     ROI_list = [cv2.blur((resize_image(item[0], (IMG_SIZE,IMG_SIZE))), (2,2)) for item in ROI_list] #Final blur off
