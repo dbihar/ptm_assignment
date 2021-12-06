@@ -86,7 +86,7 @@ if __name__ == '__main__':
 
     ### First Convolution Layer
     # 64 -> number of filters, (3,3) -> size of each kernal,
-    model.add(Conv2D(64, (3,3), input_shape = x_trainr.shape[1:])) # For first layer we have to mention the size of input
+    model.add(Conv2D(32, (3,3), input_shape = x_trainr.shape[1:])) # For first layer we have to mention the size of input
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2,2)))
 
@@ -96,7 +96,7 @@ if __name__ == '__main__':
     model.add(MaxPooling2D(pool_size=(2,2)))
 
     ### Third Convolution Layer
-    model.add(Conv2D(32, (3,3)))
+    model.add(Conv2D(256, (3,3)))
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2,2)))
 
@@ -125,8 +125,10 @@ if __name__ == '__main__':
     class_weights = dict(zip(np.unique(y_train), class_weights))
 
     print("Weights", class_weights, " Keys ", class_weights.keys())
+    x = {6:0}
+    x.update(class_weights)
+    class_weights = x
     class_names = ['0', '1', '(', ')', '+', '-', '', '/', 'x', '2', '3', '4', '5', '6', '7', '8', '9']
-    class_weights = {0: 0.25685072667318026, 1: 11.603275862068966, 2: 11.24649064171123, 3: 12.026268763402431, 4: 12.000534950071327, 5: 10.385648148148148, 7: 8.518860759493672, 8: 14.258262711864408, 9: 11.127480158730158, 10: 0.42066081608160816, 11: 11.65148891966759, 12: 0.520616084413776, 13: 0.4327464698166105, 14: 11.345077545515846, 15: 0.43368346436396443, 16: 0.43425433615527564, 6:1.}
     model.fit(x_trainr, y_train, epochs=3, validation_split = 0.3, class_weight=class_weights)
 
     test_loss, test_acc = model.evaluate(x_testr, y_test)
