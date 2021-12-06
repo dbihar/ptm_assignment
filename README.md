@@ -8,6 +8,10 @@ Interfaces include:
 
 ## Running standalone GUI apps
 
+### Installing requirements:
+
+	$ pip3 install -r requirements.txt
+	
 ### Image loader GUI:
 
 	$ python3 image_gui_loader.py
@@ -26,7 +30,7 @@ Interfaces include:
 	
 	Then open http://127.0.0.1:5000/
 	
-	Result will be shown on the bottom of the webpage
+	Result will be shown on the bottom of the web page
 	
 ## Running modules from command line
 
