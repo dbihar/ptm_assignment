@@ -11,18 +11,19 @@ Interfaces include:
 ### Installing requirements:
 
 	$ pip3 install -r requirements.txt
+	$ pip3 install tensorflow==2.7.0
 	
 ### Image loader GUI:
 
 	$ python3 image_gui_loader.py
 	
-	Result will be shown in messagebox
+	Result will be shown in a messagebox
 
 ### Draw GUI:
 
 	$ python3 draw.py
 	
-	Result will be shown in messagebox
+	Result will be shown in a messagebox
 
 ### Web app:
 
@@ -62,3 +63,17 @@ Training data needs to be in folder data, while our dataset can be obtained at:
 	google_link
 
 ## Docker
+
+### Building docker image:
+Build docker image with Dockerfile:
+
+	$ sudo docker build -t docker-pht-daniel .
+	$ sudo chmod 666 /var/run/docker.sock
+	
+### Downloading docker image:
+
+	
+	
+Now you can run all scripts using (just replace name of the script at the end):
+	
+	$ docker run -u=$(id -u $USER):$(id -g $USER) -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix:rw -v $(pwd)/app:/app --rm docker-pht-daniel python3 /photomath/draw.py
