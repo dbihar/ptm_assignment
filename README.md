@@ -6,7 +6,7 @@ Interfaces include:
 2) A GUI drawing app input in executable script "draw.py"
 3) A Web Flask app in executable script "flask_camera.py"
 
-## Running stand alone GUI apps
+## Running standalone GUI apps
 
 ### Image loader GUI:
 
@@ -24,19 +24,19 @@ Interfaces include:
 	
 ## Running modules from command line
 
-### Character classifier module
+### Character separator module:
+
+Character separator take one string argument which is path to image, and saves cropped output in folder "./Characters"
+
+	$ python3 character_separator.py ./shots/shot_canvas.png
+	
+### Character classifier module:
 
 Character classifier takes images from "./Characters" folder and prints prediction in commandline
 
 	$ python3 character_classifier_detect.py
 
-### Character separator module
-
-Character separator take one string argument which is path to image, and saves cropped output in folder "./Characters"
-
-	$ python3 character_separator.py ./shots/shot_canvas.png
-
-### Expression module
+### Expression module:
 
 Expression module takes string as first positional argument and evaluates it. Allowed characters are 0-9, +, *, -, /, (, )
 
