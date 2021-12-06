@@ -77,5 +77,8 @@ class DrawApp(tk.Tk):
         self.previous_y = self.y
 
 if __name__ == "__main__":
+    import os
+    import sys
+    os.chdir(sys.path[0])
     app = DrawApp()
     app.mainloop()
