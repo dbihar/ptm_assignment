@@ -95,4 +95,4 @@ Now you can run all GUI scripts using (just replace name of the script at the en
 	
 ## PS.
 
-Since this project is quick prototype, I tried to fit as much functionality in as little code possible. That's why the code is functional in nature and not o.o. so that we can avoid unnecessary abstraction. All scripts are connected trough "main. py" and links to dataset is provided.
+Since this project is quick prototype, I tried to fit as much functionality in as little code possible. That's why the code is functional in nature and not o.o. so that we can avoid unnecessary abstraction. All scripts are connected trough "main. py" and links to dataset is provided. The project has been developed in master branch contrary to usual M.O.
