@@ -21,7 +21,4 @@ ADD templates /photomath
 RUN pip3 install --upgrade pip
 RUN pip3 install -r requirements.txt
 
-RUN apt-get update && apt-get install -y python3-opencv
-RUN apt-get install python3-tk
-RUN pip3 install opencv-python
-RUN pip3 install scikit-learn
+RUN apt-get update && apt-get install -y python3-opencv python3-tk
