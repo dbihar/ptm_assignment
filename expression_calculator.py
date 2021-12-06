@@ -12,8 +12,11 @@ def is_number(item):
 
 
 def set_up_list(ex):
+    # Preparing string  for calculation
+
     ex = ex.replace(" ", "")
     ex = ex.replace("x", "*")
+    ex = ex.replace("X", "*")
     ex = ex.replace("×", "*")
     ex = ex.replace("+++", "+")
     ex = ex.replace("++", "+")
@@ -62,14 +65,15 @@ def perform_operation(n1, operand, n2):
                 n = str(float(n1) / float(n2))
                 return n
             except ZeroDivisionError:
-                print("You tried to divide by 0.")
-                print("Just for that I am going to terminate myself")
-                exit()
+                print("[ERROR] Division by 0")
+                return "nan"
     except ValueError:
         print("Value error, expression probably read incorrectly ")
         return "nan"
 
 def eval_expression_string(ex):
+    if(ex==""):
+        return nan
     expression = set_up_list(ex)
     print("String" , ex)
     print(expression)
@@ -134,8 +138,6 @@ def eval_expression_list(expression):
                     del expression[count]
                     break
             count = count + 1
-        #After that is done, it will multiply and divide what it can
-
         #print(' '.join(expression)) 
 
         count = 0
@@ -150,7 +152,6 @@ def eval_expression_list(expression):
         #Then it will add and subtact what it can
         count = 1
         #print(' '.join(expression)) 
-
         while count < len(expression) - 2:
             if expression[count] in ["+", "-"] and \
             not (expression[count+1] in P or expression[count-1] in P or expression[count+2] in M or expression[count-2] in M):
@@ -161,7 +162,6 @@ def eval_expression_list(expression):
             count = count + 1
         
         # Boundary condition
-
         if(len(expression) > 3):
             if expression[1] in ["+", "-"] and \
             not (expression[2] in P or expression[0] in P or expression[3] in M):
@@ -175,9 +175,7 @@ def eval_expression_list(expression):
                 del expression[2]
                 del expression[1]
         
-
         #print(' '.join(expression)) 
-
         if(len(expression) > 3):
             if expression[-2] in ["+", "-"] and \
             not (expression[-3] in P or expression[-1] in P or expression[-4] in M):
@@ -190,11 +188,9 @@ def eval_expression_list(expression):
                 expression[-3] = perform_operation(expression[-1], expression[-2], expression[-3])
                 expression = expression[:-2]
 
-
         #print(' '.join(expression)) 
         #The steps will repeat until only one character is left. Operations that fail will be stopped by emergency count.
-        emergency_count += 1
-           
+        emergency_count += 1 
         if emergency_count >= 200:
             print("Operation was too long or was bugged")
             return nan

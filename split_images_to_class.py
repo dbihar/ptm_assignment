@@ -7,11 +7,6 @@ import shutil
 import os
 from google.protobuf.descriptor import EnumDescriptor
 
-# absolute path
-#src_path = r"E:\pynative\reports\sales.txt"
-#dst_path = r"E:\pynative\account\sales.txt"
-#shutil.move(src_path, dst_path)
-
 glob_path = ""
 
 def parse_folder(path):

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Response, request
+from flask import Flask, render_template, Response, request, flash
 import cv2
 import datetime, time
 import os, sys
@@ -11,16 +11,16 @@ capture=0
 switch=1
 rec=0
 
-#make shots directory to save pics
+#Make shots directory to save pics
 try:
     os.mkdir('./shots')
 except OSError as error:
     pass
 
-
-#instatiate flask app  
+#Instatiate flask app  
 app = Flask(__name__, template_folder='./templates')
-
+app.secret_key = 'super secret key'
+app.config['SESSION_TYPE'] = 'filesystem'
 
 camera = cv2.VideoCapture(0)
 
@@ -45,7 +45,6 @@ def gen_frames():  # generate frame by frame from camera
                 rec_frame=frame
                 frame= cv2.putText(cv2.flip(frame,1),"Recording...", (0,25), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255),4)
                 frame=cv2.flip(frame,1)
-            
                 
             try:
                 ret, buffer = cv2.imencode('.jpg', cv2.flip(frame,1))
@@ -72,11 +71,13 @@ def tasks():
     if request.method == 'POST':
         if request.form.get('click') == 'Capture':
             global capture
+            flash('Frame captured')
             capture=1 
         elif  request.form.get('stop') == 'Calculate':
             img = cv2.imread(p)
             try:
-                calculate(img)
+                solution, expression = calculate(img)
+                flash("Expression: " + expression + " = " + str(solution))
             except KeyboardInterrupt:
                 print('Interrupted')
                 try:
@@ -90,5 +91,8 @@ def tasks():
     return render_template('index.html')
 
 if __name__ == '__main__':
+    import os
+    import sys
+    os.chdir(sys.path[0])
     p = os.path.sep.join(['shots', "shot_1.jpg"])
     app.run()

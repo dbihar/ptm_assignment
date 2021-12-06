@@ -4,7 +4,7 @@ import imutils
 import argparse
 import os
 
-#resize but doesnt distort vertical aspect ratio
+#Resize but ajust aspect ratio to work best with ML model
 def resize_image(img, size=(32,32)):
 
     h, w = img.shape[:2]
@@ -68,7 +68,6 @@ def resize_image(img, size=(32,32)):
 def separate_characters(image, IMG_SIZE = 32, save_characters = False, debug = False):
     print("Image_type:", type(image), " Shape:", image.shape)
     PATH = 'Characters'
-    #image = imutils.resize(image, height = 1000)
     image = imutils.resize(image, height = 400)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
@@ -79,10 +78,6 @@ def separate_characters(image, IMG_SIZE = 32, save_characters = False, debug = F
     if(debug):
         cv2.imshow('tresh ', thresh)
         key = cv2.waitKey(200)
-        #cv2.imshow('gr ', image)
-        #key = cv2.waitKey(200)
-        #cv2.imshow('im ', gray)
-        #key = cv2.waitKey(200)
 
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1,3)) #Tune this to get good separation
     dilate = cv2.dilate(thresh, kernel, iterations=30)
@@ -113,7 +108,6 @@ def separate_characters(image, IMG_SIZE = 32, save_characters = False, debug = F
             cv2.imwrite(os.path.join(PATH , 'ch_at_' + str(x) + ".jpg"), resize_image(ROI, (IMG_SIZE,IMG_SIZE)))
             
     ROI_list = list(ROI_in_order)
-    #print(ROI_list)
     ROI_list = [cv2.blur((resize_image(item[0], (IMG_SIZE,IMG_SIZE))), (2,2)) for item in ROI_list] #Final blur off
 
     if(debug or save_characters):
@@ -174,7 +168,6 @@ if __name__ == '__main__':
     ROI_list = [(cv2.blur((resize_image(item[0], (IMG_SIZE,IMG_SIZE))), (2,2)), item[1]) for item in ROI_list]
     ROI_in_order = sorted(ROI_list, key=lambda tup: tup[1])
 
-    
     save_characters = True
     if(save_characters):
         dir = 'Characters'
@@ -190,18 +183,3 @@ if __name__ == '__main__':
     stack = np.hstack(ROI_list)
     cv2.imshow('Character', stack)
     key = cv2.waitKey(5000)
-
-    """
-    img_gray = cv2.cvtColor(ROI, cv2.COLOR_BGR2GRAY)
-    img_gauss = cv2.GaussianBlur(img_gray, (3,3), 0)
-    kernel = np.ones((4,4), np.uint8) 
-    erode = cv2.erode(img_gauss, kernel, iterations=1)
-    th3 = cv2.adaptiveThreshold(erode,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV,51,10)
-    ctrs, hier = cv2.findContours(th3.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    rects = [cv2.boundingRect(ctr) for ctr in ctrs]
-    rects.sort()
-    """
-    #x, y, w, h = rects[0]
-    #cv2.rectangle(ROI, (x, y), (x+w, y+h), (0, 255, 0), 3)
-    #cv2.imshow('Window_name', ROI)
-    #key = cv2.waitKey(3000)

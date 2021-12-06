@@ -11,16 +11,22 @@ Interfaces include:
 ### Image loader GUI:
 
 	$ python3 image_gui_loader.py
+	
+	Result will be shown in messagebox
 
 ### Draw GUI:
 
 	$ python3 draw.py
+	
+	Result will be shown in messagebox
 
 ### Web app:
 
 	$ python3 flask_camera.py
 	
 	Then open http://127.0.0.1:5000/
+	
+	Result will be shown on the bottom of the webpage
 	
 ## Running modules from command line
 

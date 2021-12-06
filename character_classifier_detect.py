@@ -1,8 +1,5 @@
 import tensorflow as tf
 import numpy as np
-#from tensorflow.keras.models import Sequential
-#from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten, Conv2D, MaxPooling2D
-
 import argparse
 
 def get_class_names():
@@ -10,17 +7,6 @@ def get_class_names():
     return class_names
 
 def classify_image(img, model, IMG_SIZE = 32, debug = False):
-    #import cv2
-    #img = cv2.imread('three.png')
-    #plt.imshow(img)
-
-    # Converting to grayscale
-    #gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-    # Resizing to a 32x32 image
-    # Please note my image was already in correct dimension
-    #resized = cv2.resize(img, (IMG_SIZE, IMG_SIZE), interpolation = cv2.INTER_AREA)
- 
     # 0-1 scaling
     newimg = tf.keras.utils.normalize(img, axis = 1)
     normalized_img = newimg
@@ -34,11 +20,6 @@ def classify_image(img, model, IMG_SIZE = 32, debug = False):
     
     if(debug):
         import matplotlib.pyplot as plt
-        #plt.figure()
-        #plt.imshow((img))
-        #plt.title(class_names[np.argmax(predictions[0])])
-        #plt.axis("off")
-        #plt.show()
         plt.figure()
         plt.imshow(np.squeeze(normalized_img))
         plt.title(class_names[np.argmax(predictions[0])])
@@ -58,7 +39,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     IMG_SIZE=32
-
 
     #Loading model
     from tensorflow import keras
