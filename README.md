@@ -63,7 +63,7 @@ Expression module takes string as first positional argument and evaluates it. Al
 
 	$ python3 expression_calculator.py "2 + 3 - ( 9 * 2 ) / 2 - ( 7 - 20 )"
 
-## Training data download and training model
+## Training data download and training model:
 Training of the new model is as easy as running:
 	
 	$ python3 character_classifier_train.py
@@ -83,7 +83,7 @@ Build docker image with Dockerfile:
 ## Downloading docker image:
 
 	
-## Running from docker container
+## Running from docker container:
 
 Set up host PC with:
 
