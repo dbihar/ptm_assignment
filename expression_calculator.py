@@ -110,6 +110,12 @@ def eval_expression_list(expression):
             if is_number(expression[count]) and is_number(expression[count + 1]):
                 expression.insert(count + 1, "+")
             count = count + 1
+        
+        count = 0
+        while count < len(expression) - 1:
+            if (expression[count] == "(") and (expression[count + 1]=="+"):
+                expression.insert(count + 1, "0")
+            count = count + 1
 
         #print(' '.join(expression)) 
 
