@@ -62,9 +62,11 @@ if __name__ == '__main__':
     x_train = tf.keras.utils.normalize(x_train, axis = 1)
     x_test = tf.keras.utils.normalize(x_test, axis = 1)
 
+    class_names = ['0', "1", '(', ')', '+', '-', '/', 'x', '2', '3', '4', '5', '6', '7', '8', '9']
+
     #Normalize data prewiev
     if(args.debug):
-        class_names = dataset.class_names
+        #class_names = dataset.class_names
         plt.figure(figsize=(10, 10))
         for i in range(9):
             ax = plt.subplot(3, 3, i + 1)
@@ -96,7 +98,7 @@ if __name__ == '__main__':
     model.add(MaxPooling2D(pool_size=(2,2)))
 
     ### Third Convolution Layer
-    model.add(Conv2D(64, (3,3)))
+    model.add(Conv2D(256, (3,3)))
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2,2)))
 
@@ -128,17 +130,13 @@ if __name__ == '__main__':
     #x = {6:0}
     #x.update(class_weights)
     #class_weights = x
-    class_names = ['0', "1", '(', ')', '+', '-', '/', 'x', '2', '3', '4', '5', '6', '7', '8', '9']
-    model.fit(x_trainr, y_train, epochs=3, validation_split = 0.3, class_weight=class_weights)
+    model.fit(x_trainr, y_train, epochs=4, validation_split = 0.2, class_weight=class_weights)
 
     test_loss, test_acc = model.evaluate(x_testr, y_test)
     print("Test Loss on 10,000 test samples", test_loss)
     print("Test Accuracy on 10,000 test samples", test_acc)
 
     #Predictions
-
-    predictions = model.predict([x_testr])
-    print(predictions)
 
     # Saving a Keras model:
     model.save('Model')
