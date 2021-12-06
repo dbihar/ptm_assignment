@@ -2,7 +2,7 @@ FROM python:3
 RUN mkdir photomath
 ADD draw.py /photomath
 ADD flask_camera.py /photomath
-ADD requirements.txt /photomath
+ADD requirements.txt /
 ADD expression_calculator.py /photomath
 ADD character_classifier_train.py /photomath
 ADD character_classifier_detect.py /photomath
