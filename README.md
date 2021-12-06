@@ -25,6 +25,7 @@ Interfaces include:
 	
 	Result will be shown in a messagebox
 	
+	![alt text](https://github.com/dbihar/ptm_assignment/blob/master/Assets/raw1.png?raw=true)
 	![plot](./Assets/draw1.png)
 	![plot](./Assets/draw3.png)
 
