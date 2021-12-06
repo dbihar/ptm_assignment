@@ -41,6 +41,8 @@ Interfaces include:
 	
 	Result will be shown on the bottom of the web page
 	
+![plot](./Assets/flask.png)
+	
 ## Running modules from command line
 
 ### Character separator module:
