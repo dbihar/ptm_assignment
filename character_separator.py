@@ -30,7 +30,7 @@ def resize_image(img, size=(32,32)):
 
     if h > w: 
         print("Normal slender")
-        img = cv2.resize(img, (25,29), cv2.INTER_NEAREST)
+        img = cv2.resize(img, (24,31), cv2.INTER_NEAREST) #Play with aspect ration of letters
         h, w = img.shape[:2]
         new_image_width = 32
         new_image_height = 32

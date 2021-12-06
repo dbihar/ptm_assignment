@@ -7,6 +7,8 @@ from PIL import Image
 import cv2
 from main import calculate
 import sys
+from tkinter import messagebox
+from numpy import isnan, float
 
 file_types = [("JPEG (*.jpg)", "*.jpg"),
               ("All files (*.*)", "*.*")]
@@ -37,7 +39,8 @@ def image_load():
         if event == "Calculate":
             img = cv2.imread(values["-FILE-"])
             try:
-                calculate(img)
+                solution, expression = calculate(img)
+                messagebox.showinfo("Information", "Expression: " + expression + " = " + str(solution))
             except KeyboardInterrupt:
                 print('Expression not correct')
                 try:

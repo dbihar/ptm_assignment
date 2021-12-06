@@ -195,7 +195,7 @@ def eval_expression_list(expression):
         #The steps will repeat until only one character is left. Operations that fail will be stopped by emergency count.
         emergency_count += 1
            
-        if emergency_count >= 1000:
+        if emergency_count >= 200:
             print("Operation was too long or was bugged")
             return nan
     return expression[0]

@@ -6,6 +6,8 @@ import os
 import cv2
 from PIL import Image, ImageGrab
 import numpy as np
+from tkinter import messagebox
+from numpy import isnan
 
 class DrawApp(tk.Tk):
     def __init__(self):
@@ -36,7 +38,9 @@ class DrawApp(tk.Tk):
             img = ImageGrab.grab((x+10, y+10, x+w-10, y+h-10)).convert('RGB') 
             opencvImage = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
             img.save('shots/shot_canvas.png', 'png')
-            calculate(opencvImage)
+            solution, expression = calculate(opencvImage)
+            messagebox.showinfo("Information", "Expression: " + expression + " = " + str(solution))
+
         except KeyboardInterrupt:
             print('Expression not correct')
             try:

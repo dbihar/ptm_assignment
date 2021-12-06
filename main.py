@@ -8,7 +8,7 @@ from tensorflow import keras
 
 def calculate(img):
     # Separate characters
-    characters = separate_characters(img, IMG_SIZE = 32, save_characters = True, debug = True)
+    characters = separate_characters(img, IMG_SIZE = 32, save_characters = True, debug = False)
 
     # Loading model
     model = keras.models.load_model('Model')
@@ -16,8 +16,10 @@ def calculate(img):
     # Getting expression
     expression = ""
     for character_im in characters:
-        expression = expression + classify_image(character_im, model)
+        expression = expression + classify_image(character_im, model, debug = False)
     
     # Evaluating expression
     print("Expression = ", expression)
-    print("Solution = ", eval_expression_string(expression))
+    sol = eval_expression_string(expression)
+    print("Solution = ", sol)
+    return sol, expression
