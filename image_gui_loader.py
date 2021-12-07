@@ -53,7 +53,5 @@ def image_load():
 
     window.close()
 if __name__ == "__main__":
-    import os
-    import sys
     os.chdir(sys.path[0])
     image_load()

@@ -8,7 +8,7 @@ import cv2
 import numpy as np
 import imutils
 import argparse
-import os
+import os, sys
 
 #Resize but ajust aspect ratio to work best with ML model
 def resize_image(img, size=(32,32)):
@@ -145,8 +145,6 @@ def separate_characters(image, IMG_SIZE = 32, save_characters = False, debug = F
 
 if __name__ == '__main__':
     IMG_SIZE = 32
-    import os
-    import sys
     os.chdir(sys.path[0])
     
     PATH = 'Characters'

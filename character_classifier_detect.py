@@ -6,6 +6,7 @@
 import tensorflow as tf
 import numpy as np
 import argparse
+import os, sys
 
 def get_class_names():
     class_names = ['0', "1", '(', ')', '+', '-', '/', 'x', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -34,8 +35,6 @@ def classify_image(img, model, IMG_SIZE = 32, debug = False):
     return (class_names[np.argmax(predictions[0])])
 
 if __name__ == '__main__':
-    import os
-    import sys
     os.chdir(sys.path[0])
     
     parser = argparse.ArgumentParser(description = '')

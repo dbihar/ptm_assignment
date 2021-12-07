@@ -11,10 +11,9 @@ from sklearn.utils import class_weight
 
 #from sklearn.model_selection import train_test_split
 import argparse
+import os, sys
 
 if __name__ == '__main__':
-    import os
-    import sys
     os.chdir(sys.path[0])
     parser = argparse.ArgumentParser(description = '')
     parser.set_defaults(debug = False)
