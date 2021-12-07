@@ -21,7 +21,7 @@ def get_class_names():
     class_names = ['0', "1", '(', ')', '+', '-', '/', 'x', '2', '3', '4', '5', '6', '7', '8', '9']
     return class_names
 
-def classify_image(img, model, IMG_SIZE = 32, debug = False):
+def classify_image(img, model, IMG_SIZE, debug = False):
     # 0-1 scaling
     newimg = tf.keras.utils.normalize(img, axis = 1)
     normalized_img = newimg
@@ -44,7 +44,6 @@ def classify_image(img, model, IMG_SIZE = 32, debug = False):
 
 if __name__ == '__main__':
     os.chdir(sys.path[0])
-    
     parser = argparse.ArgumentParser(description = '')
     parser.set_defaults(debug = False)
     parser.add_argument('--debug', dest = "debug", help='Program will print and plot relevant data', action='store_true')
@@ -110,7 +109,6 @@ if __name__ == '__main__':
         onlyfiles = [f for f in listdir("Characters") if isfile(join("Characters", f))]
 
         #Predicting arbitrary img
-
         print("File list = ", onlyfiles)
         for filename in onlyfiles:
             img = cv2.imread("Characters/" + filename)
@@ -120,7 +118,7 @@ if __name__ == '__main__':
 
             # Resizing to a 32x32 image
             # Please note my image was already in correct dimension
-            resized = cv2.resize(gray, (32,32), interpolation = cv2.INTER_AREA)
+            resized = cv2.resize(gray, (IMG_SIZE, IMG_SIZE), interpolation = cv2.INTER_AREA)
             #resized.shape
 
             # 0-1 scaling

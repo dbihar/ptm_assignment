@@ -10,8 +10,10 @@ import imutils
 import argparse
 import os, sys
 
+IMG_SIZE=32
+
 #Resize but ajust aspect ratio to work best with ML model
-def resize_image(img, size=(32,32)):
+def resize_image(img, size=(IMG_SIZE, IMG_SIZE)):
 
     h, w = img.shape[:2]
     c = img.shape[2] if len(img.shape)>2 else 1
@@ -20,8 +22,8 @@ def resize_image(img, size=(32,32)):
         print("Extreme slender")
         img = cv2.resize(img, (15,29), cv2.INTER_NEAREST)
         h, w = img.shape[:2]
-        new_image_width = 32
-        new_image_height = 32
+        new_image_width = IMG_SIZE
+        new_image_height = IMG_SIZE
         color = (0)
         result = np.full((new_image_height,new_image_width), color, dtype=np.uint8)
 
@@ -37,8 +39,8 @@ def resize_image(img, size=(32,32)):
         print("Normal slender")
         img = cv2.resize(img, (24,31), cv2.INTER_NEAREST) #Play with aspect ration of letters
         h, w = img.shape[:2]
-        new_image_width = 32
-        new_image_height = 32
+        new_image_width = IMG_SIZE
+        new_image_height = IMG_SIZE
         color = (0)
         result = np.full((new_image_height,new_image_width), color, dtype=np.uint8)
 
@@ -67,7 +69,7 @@ def resize_image(img, size=(32,32)):
 
     # copy img image into center of result image
     result[y_center:y_center+h, x_center:x_center+w] = img
-    result = cv2.resize(result, (32,32), cv2.INTER_NEAREST)
+    result = cv2.resize(result, (IMG_SIZE, IMG_SIZE), cv2.INTER_NEAREST)
     return result
 
 def separate_characters(image, IMG_SIZE = 32, save_characters = False, debug = False):
@@ -143,7 +145,6 @@ def separate_characters(image, IMG_SIZE = 32, save_characters = False, debug = F
     return ROI_list
 
 if __name__ == '__main__':
-    IMG_SIZE = 32
     os.chdir(sys.path[0])
     
     PATH = 'Characters'

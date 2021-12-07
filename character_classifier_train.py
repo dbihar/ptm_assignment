@@ -14,6 +14,7 @@ from sklearn.utils import class_weight
 from sklearn.metrics import ConfusionMatrixDisplay
 from sklearn.metrics import confusion_matrix
 
+IMG_SIZE=32
 
 if __name__ == '__main__':
     os.chdir(sys.path[0])
@@ -21,8 +22,6 @@ if __name__ == '__main__':
     parser.set_defaults(debug = False)
     parser.add_argument('--debug', dest = "debug", help='Program will print and plot relevant data', action='store_true')
     args = parser.parse_args()
-
-    IMG_SIZE=32
 
     # Loading our data.
     dataset = tf.keras.preprocessing.image_dataset_from_directory(
