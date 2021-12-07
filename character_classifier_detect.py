@@ -53,7 +53,7 @@ if __name__ == '__main__':
     model = keras.models.load_model('Model')
 
     # If we want to predicti on validation dataset (for metrics etc.)
-    validation_bool = True
+    validation_bool = False
 
     if(validation_bool):
         validation = tf.keras.preprocessing.image_dataset_from_directory(
@@ -116,13 +116,8 @@ if __name__ == '__main__':
             # Converting to grayscale
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-            # Resizing to a 32x32 image
-            # Please note my image was already in correct dimension
-            resized = cv2.resize(gray, (IMG_SIZE, IMG_SIZE), interpolation = cv2.INTER_AREA)
-            #resized.shape
-
             # 0-1 scaling
-            newimg = tf.keras.utils.normalize(resized, axis = 1)
+            newimg = tf.keras.utils.normalize(gray, axis = 1)
             plt.imshow(img)
 
             # For kernal operations

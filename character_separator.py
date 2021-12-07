@@ -115,33 +115,28 @@ def separate_characters(image, IMG_SIZE = 32, save_characters = False, debug = F
     # Sorting characters from left to right
     ROI_in_order = sorted(ROI_list, key=lambda tup: tup[1])
 
+    # Sorting characters from left to rigth      
+    ROI_list = list(ROI_in_order)
+    x_list = [item[1] for item in ROI_list]
+    ROI_list = [cv2.blur((resize_image(item[0], (IMG_SIZE,IMG_SIZE))), (2,2)) for item in ROI_list] #Final blur
+
     # Saving characters
-    if(save_characters):
-        import os
-        import sys
+    if(debug or save_characters):
         os.chdir(sys.path[0])
         try:
             dir = 'Characters'
             for f in os.listdir(dir):
                 os.remove(os.path.join(dir, f))
-
-            for ROI, x in ROI_in_order:
-                cv2.imwrite(os.path.join(PATH , 'ch_at_' + str(x) + ".jpg"), resize_image(ROI, (IMG_SIZE,IMG_SIZE)))
         except FileNotFoundError:
             print("[WARN] No Character directory")
 
-    # Sorting characters from left to rigth      
-    ROI_list = list(ROI_in_order)
-    ROI_list = [cv2.blur((resize_image(item[0], (IMG_SIZE,IMG_SIZE))), (2,2)) for item in ROI_list] #Final blur off
-
-    if(debug or save_characters):
         if(debug):
             stack = np.hstack(ROI_list)
             cv2.imshow('Character', stack)
             key = cv2.waitKey(1200)
-        for ROI in ROI_list:
+        for ind, ROI in enumerate(ROI_list):
             if(save_characters):
-                 cv2.imwrite(os.path.join(PATH , 'ch_at_' + str(x) + ".jpg"), ROI)
+                 cv2.imwrite(os.path.join(PATH , 'ch_at_' + str(x_list[ind]) + ".jpg"), ROI)
 
     return ROI_list
 
