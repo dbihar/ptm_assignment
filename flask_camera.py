@@ -3,13 +3,14 @@
 #   Flask app for capturing and calculating
 #
 
-from flask import Flask, render_template, Response, request, flash
 import cv2
 import datetime, time
 import os, sys
 import numpy as np
+
 from threading import Thread
 from main import calculate
+from flask import Flask, render_template, Response, request, flash
 
 global capture,rec_frame,  switch, rec, out 
 capture=0
@@ -24,7 +25,7 @@ except OSError as error:
 
 #Instatiate flask app  
 app = Flask(__name__, template_folder='./templates')
-app.secret_key = 'super secret key'
+app.secret_key = 'ghbersewretkipmez'
 app.config['SESSION_TYPE'] = 'filesystem'
 
 camera = cv2.VideoCapture(0)
@@ -42,7 +43,6 @@ def gen_frames():  # generate frame by frame from camera
         if success: 
             if(capture):  # Capturing frames
                 capture=0
-                #now = datetime.datetime.now()
                 global p
                 cv2.imwrite(p, frame)
             

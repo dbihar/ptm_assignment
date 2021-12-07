@@ -3,13 +3,13 @@
 #   Loading images GUI
 #
 
-import io
-import os
-import PySimpleGUI as sg
-from PIL import Image
 import cv2
+import io
+import os, sys
+import PySimpleGUI as sg
+
+from PIL import Image
 from main import calculate
-import sys
 from tkinter import messagebox
 from numpy import isnan, float
 

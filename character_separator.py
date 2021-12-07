@@ -15,7 +15,6 @@ def resize_image(img, size=(32,32)):
 
     h, w = img.shape[:2]
     c = img.shape[2] if len(img.shape)>2 else 1
-    #print(h,w)
     
     if h > w * 2.8: 
         print("Extreme slender")
@@ -160,8 +159,6 @@ if __name__ == '__main__':
     #Resizing so that we keep enough information but also that our kernels can work on any resolution input
     image = imutils.resize(image, height = 400)
 
-    #(thresh, image) = cv2.threshold(image, 127, 255, cv2.THRESH_BINARY)
-
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     # Denoising
@@ -183,12 +180,10 @@ if __name__ == '__main__':
         area = cv2.contourArea(c)
         if area > 500:
             x,y,w,h = cv2.boundingRect(c)
-            #ROI = gray[y:y+h, x:x+w], x
             im_tmp = thresh[y:y+h, x:x+w]
             (_, im_tmp) = cv2.threshold(im_tmp, 127, 255, cv2.THRESH_BINARY)
             ROI = im_tmp, x
             ROI_list.append(ROI)
-            #print(ROI_list)
 
     # Sorting characters from left to right
     ROI_list = [(cv2.blur((resize_image(item[0], (IMG_SIZE,IMG_SIZE))), (2,2)), item[1]) for item in ROI_list]

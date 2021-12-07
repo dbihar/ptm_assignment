@@ -3,14 +3,15 @@
 #   Drawing GUI for math calculations
 #
 
+import cv2
+import numpy as np
 import tkinter as tk
-from warnings import catch_warnings
-from main import calculate
 import sys
 import os
-import cv2
+
 from PIL import Image, ImageGrab
-import numpy as np
+from warnings import catch_warnings
+from main import calculate
 from tkinter import messagebox
 from numpy import isnan
 

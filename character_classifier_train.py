@@ -2,16 +2,15 @@
 #
 #   Model training script
 #
-
-import tensorflow as tf
-import numpy as np
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten, Conv2D, MaxPooling2D
-from sklearn.utils import class_weight
-
-#from sklearn.model_selection import train_test_split
 import argparse
 import os, sys
+import numpy as np
+import tensorflow as tf
+
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Activation, Flatten, Conv2D, MaxPooling2D
+from sklearn.utils import class_weight
+
 
 if __name__ == '__main__':
     os.chdir(sys.path[0])
@@ -40,10 +39,6 @@ if __name__ == '__main__':
     x_test, y_test = (zip(*validation))
     x_test, y_test = np.array(x_test), np.array(y_test)
     x_test, y_test = np.squeeze(x_test), np.squeeze(y_test)
-
-    #x_train, x_test, y_train, y_test = train_test_split(x_test, y_test,
-    #                                                    test_size = 0.2,
-    #                                                    random_state = 1)
 
     print("Data = ", x_train.shape, y_train.shape, "Val = ", x_test.shape, y_test.shape)
 

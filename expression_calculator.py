@@ -29,7 +29,6 @@ def set_up_list(ex):
 
     #Then it creates the list and adds each individual character to the list
     a_list = []
-    #print("ex is", ex)
     a_list.append("")
     for i in range(len(ex)):
         if ex[i] in ["+", '*', '/', '-', '(', ')']:
@@ -41,7 +40,6 @@ def set_up_list(ex):
     if(a_list[-1] == ""):
         del a_list[-1]
 
-    #Print("a list", a_list)
     count = 0
     #Finally it combines individual numbers into actual numbers based on user input
     while count < len(a_list) - 1:
@@ -166,7 +164,6 @@ def eval_expression_list(expression):
         
         # Add operations
         count = 1
-        #print(' '.join(expression)) 
         while count < len(expression) - 2:
             if expression[count] in ["+", "-"] and \
             not (expression[count+1] in P or expression[count-1] in P or expression[count+2] in M or expression[count-2] in M):
@@ -201,7 +198,6 @@ def eval_expression_list(expression):
                 expression[-3] = perform_operation(expression[-1], expression[-2], expression[-3])
                 expression = expression[:-2]
 
-        # print(' '.join(expression)) 
         # The steps will repeat until only one character is left. Operations that fail will be stopped by emergency count.
         emergency_count += 1 
         if emergency_count >= 200:

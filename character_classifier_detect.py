@@ -3,9 +3,9 @@
 #   Script classifies characters from ./Characters folder
 #
 
-import tensorflow as tf
-import numpy as np
 import argparse
+import numpy as np
+import tensorflow as tf
 import os, sys
 
 def get_class_names():
