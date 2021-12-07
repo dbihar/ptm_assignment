@@ -1,5 +1,9 @@
-import argparse
+#!/usr/bin/env python3
+#
+#   Expression calculator. It takes string argument and prints solution. 
+#
 
+import argparse
 from numpy import nan
 
 def is_number(item):
@@ -9,10 +13,10 @@ def is_number(item):
     except ValueError:
         return False
 
-
 def set_up_list(ex):
     # Preparing string  for calculation
 
+    # Simple cleanupt, though not all replaces are necessary
     ex = ex.replace(" ", "")
     ex = ex.replace("x", "*")
     ex = ex.replace("X", "*")
@@ -37,7 +41,7 @@ def set_up_list(ex):
     if(a_list[-1] == ""):
         del a_list[-1]
 
-    #print("a list", a_list)
+    #Print("a list", a_list)
     count = 0
     #Finally it combines individual numbers into actual numbers based on user input
     while count < len(a_list) - 1:
@@ -52,6 +56,8 @@ def set_up_list(ex):
 
 
 def perform_operation(n1, operand, n2):
+    # Function tries to perform simple operations
+
     try:
         if operand == "+":
             return str(float(n1) + float(n2))
@@ -73,9 +79,13 @@ def perform_operation(n1, operand, n2):
 def eval_expression_string(ex):
     if(ex==""):
         return nan
+
+    # First we set up our list of numbers and signs
     expression = set_up_list(ex)
     print("String" , ex)
     print(expression)
+
+    # Now we can evaluate list expression
     result = eval_expression_list(expression)
     return result
 
@@ -87,9 +97,10 @@ def eval_expression_list(expression):
     while len(expression) != 1:
         expression = [item for item in expression if (item!="")]
         print(' '.join(expression)) 
-        #If there are parentheses around a single list item, the list item is obviously just a number, eliminate parentheses
-        #Will check to see if the first parentheses exists first so that it does not throw an index error
-        # - infront of number
+        # If there are parentheses around a single list item, the list item is obviously just a number, eliminate parentheses
+        # We will check to see if the first parentheses exists first so that it does not throw an index error
+
+        # - infront of number solution
         count = 0
         while count < len(expression) - 1:
             if (expression[count] == '-') and is_number(expression[count + 1]):
@@ -104,37 +115,36 @@ def eval_expression_list(expression):
             else:
                 del expression[0]
                 break
-
+        
+        # 5 5 --> 5 + 5
         count = 0
         while count < len(expression) - 1:
             if is_number(expression[count]) and is_number(expression[count + 1]):
                 expression.insert(count + 1, "+")
             count = count + 1
         
+        # (+ --> (0 +
         count = 0
         while count < len(expression) - 1:
             if (expression[count] == "(") and (expression[count + 1]=="+"):
                 expression.insert(count + 1, "0")
             count = count + 1
 
-        #print(' '.join(expression)) 
-
+        # 5( --> 5 * (
         count = 0
         while count < len(expression) - 1:
             if is_number(expression[count]) and expression[count + 1] == '(':
                 expression.insert(count + 1, "*")
             count = count + 1
 
-        #print(' '.join(expression)) 
-
+        # )5 --> ) * 5
         count = 0
         while count < len(expression) - 1:
             if is_number(expression[count+1]) and expression[count] == ')':
                 expression.insert(count + 1, "*")
             count = count + 1
 
-        #print(' '.join(expression)) 
-
+        # (2) --> 2
         count = 0
         while count < len(expression) - 2:
             if expression[count] == "(":
@@ -143,8 +153,8 @@ def eval_expression_list(expression):
                     del expression[count]
                     break
             count = count + 1
-        #print(' '.join(expression)) 
 
+        # Multiply operations
         count = 0
         while count < len(expression) - 1:
             if expression[count] in ["*", "/"] and not (expression[count+1] in P or expression[count-1] in P):
@@ -154,7 +164,7 @@ def eval_expression_list(expression):
                 break
             count = count + 1
         
-        #Then it will add and subtact what it can
+        # Add operations
         count = 1
         #print(' '.join(expression)) 
         while count < len(expression) - 2:
@@ -166,7 +176,7 @@ def eval_expression_list(expression):
                 break
             count = count + 1
         
-        # Boundary condition
+        # Boundary conditions
         if(len(expression) > 3):
             if expression[1] in ["+", "-"] and \
             not (expression[2] in P or expression[0] in P or expression[3] in M):
@@ -180,21 +190,19 @@ def eval_expression_list(expression):
                 del expression[2]
                 del expression[1]
         
-        #print(' '.join(expression)) 
         if(len(expression) > 3):
             if expression[-2] in ["+", "-"] and \
             not (expression[-3] in P or expression[-1] in P or expression[-4] in M):
                 expression[-3] = perform_operation(expression[-1], expression[-2], expression[-3])
                 expression = expression[:-2]
-                
         elif(len(expression) > 2):
             if expression[-2] in ["+", "-"] and \
             not (expression[-3] in P or expression[-1]):
                 expression[-3] = perform_operation(expression[-1], expression[-2], expression[-3])
                 expression = expression[:-2]
 
-        #print(' '.join(expression)) 
-        #The steps will repeat until only one character is left. Operations that fail will be stopped by emergency count.
+        # print(' '.join(expression)) 
+        # The steps will repeat until only one character is left. Operations that fail will be stopped by emergency count.
         emergency_count += 1 
         if emergency_count >= 200:
             print("Operation was too long or was bugged")
@@ -206,5 +214,7 @@ if __name__ == '__main__':
     parser.set_defaults(ex = "2+2")
     parser.add_argument( 'ex', action = 'store', type = str, help = 'expression' )
     args = parser.parse_args()
+
+    # Evaluating string argument input
     result = eval_expression_string(args.ex)
     print(result)

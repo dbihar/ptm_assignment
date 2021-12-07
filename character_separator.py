@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+#
+#   Character separator functionality.
+#   For image path input it divides Characters and saves them in ./Characters
+#
+
 import cv2 
 import numpy as np
 import imutils
@@ -66,11 +72,17 @@ def resize_image(img, size=(32,32)):
     return result
 
 def separate_characters(image, IMG_SIZE = 32, save_characters = False, debug = False):
+
+    # Comments are the same as in main so brief version here
+
     print("Image_type:", type(image), " Shape:", image.shape)
     PATH = 'Characters'
+
+    # Resizing to fixed height so that kernels function the same
     image = imutils.resize(image, height = 400)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
+    # Denoising
     blur = cv2.medianBlur(gray, 13)
     thresh = cv2.adaptiveThreshold(blur, 255 , cv2.ADAPTIVE_THRESH_GAUSSIAN_C, 
     cv2.THRESH_BINARY_INV,51,4)
@@ -82,11 +94,12 @@ def separate_characters(image, IMG_SIZE = 32, save_characters = False, debug = F
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1,3)) #Tune this to get good separation
     dilate = cv2.dilate(thresh, kernel, iterations=30)
 
+    # Finding characters
     cnts = cv2.findContours(dilate, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     cnts = cnts[0] if len(cnts) == 2 else cnts[1]
 
+    # Splitting characters and populating list with their x coordinate
     ROI_list = []
-
     for c in cnts:
         area = cv2.contourArea(c)
         if area > 500:
@@ -97,8 +110,10 @@ def separate_characters(image, IMG_SIZE = 32, save_characters = False, debug = F
 
             ROI_list.append(ROI)
 
+    # Sorting characters from left to right
     ROI_in_order = sorted(ROI_list, key=lambda tup: tup[1])
 
+    # Saving characters
     if(save_characters):
         import os
         import sys
@@ -112,7 +127,8 @@ def separate_characters(image, IMG_SIZE = 32, save_characters = False, debug = F
                 cv2.imwrite(os.path.join(PATH , 'ch_at_' + str(x) + ".jpg"), resize_image(ROI, (IMG_SIZE,IMG_SIZE)))
         except FileNotFoundError:
             print("[WARN] No Character directory")
-            
+
+    # Sorting characters from left to rigth      
     ROI_list = list(ROI_in_order)
     ROI_list = [cv2.blur((resize_image(item[0], (IMG_SIZE,IMG_SIZE))), (2,2)) for item in ROI_list] #Final blur off
 
@@ -139,27 +155,32 @@ if __name__ == '__main__':
     parser.add_argument( 'path', action = 'store', type = str, help = 'Path to image file.' )
     args = parser.parse_args()
 
+    # Load image
     print(args.path)
     image = cv2.imread(args.path)
+
+    #Resizing so that we keep enough information but also that our kernels can work on any resolution input
     image = imutils.resize(image, height = 400)
 
     #(thresh, image) = cv2.threshold(image, 127, 255, cv2.THRESH_BINARY)
 
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
+    # Denoising
     blur = cv2.medianBlur(gray, 13)
     thresh = cv2.adaptiveThreshold(blur, 255 , cv2.ADAPTIVE_THRESH_GAUSSIAN_C, 
     cv2.THRESH_BINARY_INV,51,4)
     cv2.imshow('tresh ', thresh)
 
-    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1,3)) #This kernel is to catch slender - sign
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1,3)) #This kernel is to catch slender "-" sign
     dilate = cv2.dilate(thresh, kernel, iterations=30)
 
+    # Finding characters
     cnts = cv2.findContours(dilate, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     cnts = cnts[0] if len(cnts) == 2 else cnts[1]
 
+    # Populating list of characters and their x position (Splitting characters)
     ROI_list = []
-
     for c in cnts:
         area = cv2.contourArea(c)
         if area > 500:
@@ -171,9 +192,11 @@ if __name__ == '__main__':
             ROI_list.append(ROI)
             #print(ROI_list)
 
+    # Sorting characters from left to right
     ROI_list = [(cv2.blur((resize_image(item[0], (IMG_SIZE,IMG_SIZE))), (2,2)), item[1]) for item in ROI_list]
     ROI_in_order = sorted(ROI_list, key=lambda tup: tup[1])
 
+    # Saving to ./Characters folder
     save_characters = True
     if(save_characters):
         dir = 'Characters'
@@ -184,7 +207,6 @@ if __name__ == '__main__':
             ROI, x = ROI_t
             cv2.imwrite(os.path.join(PATH , 'ch' + str(count) + ".jpg"), ROI)
             
-
     ROI_list = [ROI for ROI, x in ROI_in_order]
     stack = np.hstack(ROI_list)
     cv2.imshow('Character', stack)

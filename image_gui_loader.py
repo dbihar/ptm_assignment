@@ -1,4 +1,7 @@
-#Image gui loader
+#!/usr/bin/env python3
+#
+#   Loading images GUI
+#
 
 import io
 import os

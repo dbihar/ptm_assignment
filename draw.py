@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+#
+#   Drawing GUI for math calculations
+#
+
 import tkinter as tk
 from warnings import catch_warnings
 from main import calculate
@@ -37,7 +42,11 @@ class DrawApp(tk.Tk):
             # take a snapshot on the canvas and save the image to file
             img = ImageGrab.grab((x+10, y+10, x+w-10, y+h-10)).convert('RGB') 
             opencvImage = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
+
+            # Saving canvas for later
             img.save('shots/shot_canvas.png', 'png')
+
+            # Evaluating expression
             solution, expression = calculate(opencvImage)
             messagebox.showinfo("Information", "Expression: " + expression + " = " + str(solution))
 

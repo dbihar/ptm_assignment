@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+#
+#   Main functionality of the program and it's procedures are connected here
+#
+
 from matplotlib import image
 from expression_calculator import eval_expression_string, eval_expression_list
 from character_separator import separate_characters

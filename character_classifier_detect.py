@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+#
+#   Script classifies characters from ./Characters folder
+#
+
 import tensorflow as tf
 import numpy as np
 import argparse
@@ -14,9 +19,9 @@ def classify_image(img, model, IMG_SIZE = 32, debug = False):
     # For kernal operations
     newimg = np.array(newimg).reshape(-1, IMG_SIZE, IMG_SIZE, 1)
 
+    # Making model predictions 
     predictions = model.predict(newimg)
     class_names = get_class_names()
-    #print("predict = ",class_names[np.argmax(predictions[0])])
     
     if(debug):
         import matplotlib.pyplot as plt
@@ -44,7 +49,8 @@ if __name__ == '__main__':
     from tensorflow import keras
     model = keras.models.load_model('Model')
 
-    validation_bool = True
+    # If we want to predicti on validation dataset (for metrics etc.)
+    validation_bool = False
 
     if(validation_bool):
         validation = tf.keras.preprocessing.image_dataset_from_directory(
@@ -58,7 +64,6 @@ if __name__ == '__main__':
 
         predictions = model.predict([x_testr])
         #print(predictions)
-
 
         import matplotlib.pyplot as plt
         #Preview data
@@ -86,7 +91,7 @@ if __name__ == '__main__':
                 plt.axis("off")
             plt.show()
  
-        #Running metrics
+        # Running metrics
         from sklearn.metrics import ConfusionMatrixDisplay
         from sklearn.metrics import confusion_matrix
         import matplotlib.pyplot as plt
@@ -102,10 +107,10 @@ if __name__ == '__main__':
         disp.plot(cmap=plt.cm.Blues)
         plt.show()
 
-    #plt.imshow(x_test[0])
-    #print(np.argmax(predictions[0]))
-
-    else:
+    #
+    # Predicting from "./Characters"
+    #
+    else: 
         class_names = get_class_names()
 
         from os import listdir
@@ -122,14 +127,11 @@ if __name__ == '__main__':
 
             # Converting to grayscale
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            # gray.shape
- 
 
-            # Resizing to a 28x28 image
+            # Resizing to a 32x32 image
             # Please note my image was already in correct dimension
             resized = cv2.resize(gray, (32,32), interpolation = cv2.INTER_AREA)
             #resized.shape
-
 
             # 0-1 scaling
             newimg = tf.keras.utils.normalize(resized, axis = 1)

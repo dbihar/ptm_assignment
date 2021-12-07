@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+#
+#   Flask app for capturing and calculating
+#
+
 from flask import Flask, render_template, Response, request, flash
 import cv2
 import datetime, time
@@ -35,14 +40,14 @@ def gen_frames():  # generate frame by frame from camera
     while True:
         success, frame = camera.read() 
         if success: 
-            if(capture):
+            if(capture):  # Capturing frames
                 capture=0
                 #now = datetime.datetime.now()
                 global p
                 cv2.imwrite(p, frame)
             
             if(rec):
-                rec_frame=frame
+                rec_frame=frame #Thinking about recording functionality
                 frame= cv2.putText(cv2.flip(frame,1),"Recording...", (0,25), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255),4)
                 frame=cv2.flip(frame,1)
                 
@@ -69,7 +74,8 @@ def video_feed():
 def tasks():
     global switch,camera
     if request.method == 'POST':
-        if request.form.get('click') == 'Capture':
+        #If Buttons are clicked:
+        if request.form.get('click') == 'Capture': 
             global capture
             flash('Frame captured')
             capture=1 

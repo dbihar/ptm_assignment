@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+#
+#   Model training script
+#
+
 import tensorflow as tf
 import numpy as np
 from tensorflow.keras.models import Sequential
@@ -19,7 +24,6 @@ if __name__ == '__main__':
     IMG_SIZE=32
 
     # Loading our data.
-    #color_mode='grayscale'
     dataset = tf.keras.preprocessing.image_dataset_from_directory(
         "Data/Train3", image_size=(IMG_SIZE, IMG_SIZE), batch_size=1, color_mode='grayscale'
     )
@@ -44,6 +48,7 @@ if __name__ == '__main__':
 
     print("Data = ", x_train.shape, y_train.shape, "Val = ", x_test.shape, y_test.shape)
 
+    # Previewing data
     if(args.debug):
         import matplotlib.pyplot as plt
         #Preview data
@@ -65,7 +70,7 @@ if __name__ == '__main__':
 
     class_names = ['0', "1", '(', ')', '+', '-', '/', 'x', '2', '3', '4', '5', '6', '7', '8', '9']
 
-    #Normalize data prewiev
+    # Normalize data prewiev
     if(args.debug):
         #class_names = dataset.class_names
         plt.figure(figsize=(10, 10))
@@ -118,8 +123,8 @@ if __name__ == '__main__':
     
     model.summary()
     model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=['accuracy'])
-    #model.fit(x_trainr, y_train, epochs=4, validation_split = 0.3)
 
+    # Getting class weights
     class_weights = class_weight.compute_class_weight(
                                         class_weight = "balanced",
                                         classes = np.unique(y_train),
@@ -128,21 +133,20 @@ if __name__ == '__main__':
     class_weights = dict(zip(np.unique(y_train), class_weights))
 
     print("Weights", class_weights, " Keys ", class_weights.keys())
-    #x = {6:0}
-    #x.update(class_weights)
-    #class_weights = x
+
+    # Training
     model.fit(x_trainr, y_train, epochs=4, validation_split = 0.2, class_weight=class_weights)
+
+    #Evaluating model :
 
     test_loss, test_acc = model.evaluate(x_testr, y_test)
     print("Test Loss on test samples", test_loss)
     print("Test Accuracy on test samples", test_acc)
 
-    #Predictions
-
     # Saving a Keras model:
     model.save('Model')
 
-    #Running metrics
+    # Running confusion matrix metric
     from sklearn.metrics import ConfusionMatrixDisplay
     from sklearn.metrics import confusion_matrix
     import matplotlib.pyplot as plt
