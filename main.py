@@ -11,7 +11,11 @@ import numpy as np
 from character_classifier_detect import classify_image
 from tensorflow import keras
 
+IMG_SIZE = 32
+
 def calculate(img):
+    global IMG_SIZE
+    
     # Separate characters
     characters = separate_characters(img, IMG_SIZE = 32, save_characters = True, debug = False)
 
@@ -21,7 +25,7 @@ def calculate(img):
     # Getting expression
     expression = ""
     for character_im in characters:
-        expression = expression + classify_image(character_im, model, debug = False)
+        expression = expression + classify_image(character_im, model, IMG_SIZE, debug = False)
     
     # Evaluating expression
     print("Expression = ", expression)

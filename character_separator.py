@@ -13,8 +13,9 @@ import os, sys
 IMG_SIZE=32
 
 #Resize but ajust aspect ratio to work best with ML model
-def resize_image(img, size=(IMG_SIZE, IMG_SIZE)):
-
+def resize_image(img, size=(32, 32)):
+    global IMG_SIZE
+    
     h, w = img.shape[:2]
     c = img.shape[2] if len(img.shape)>2 else 1
     

@@ -15,7 +15,7 @@ from os.path import isfile, join
 from sklearn.metrics import ConfusionMatrixDisplay
 from sklearn.metrics import confusion_matrix
 
-IMG_SIZE=32
+IMG_SIZE = 32
 
 def get_class_names():
     class_names = ['0', "1", '(', ')', '+', '-', '/', 'x', '2', '3', '4', '5', '6', '7', '8', '9']
