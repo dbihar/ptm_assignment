@@ -28,7 +28,7 @@ def set_up_list(ex):
         ex = "0" + ex
 
     signs = frozenset(["+", '*', '/', '-', '(', ')'])
-    #Then it creates the list and adds each individual character to the list
+    # Then it creates the list and adds each individual character to the list
     a_list = []
     a_list.append("")
     for i in range(len(ex)):
@@ -42,7 +42,7 @@ def set_up_list(ex):
         del a_list[-1]
 
     count = 0
-    #Finally it combines individual numbers into actual numbers based on user input
+    # Finally it combines individual numbers into actual numbers based on user input
     while count < len(a_list) - 1:
         if is_number(a_list[count]) and a_list[count + 1] == "(":
             print("[WARN ]parentheses directly after number, inserting ×.")
