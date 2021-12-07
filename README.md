@@ -3,7 +3,7 @@
 This project consists of three interfaces to our simple visual expression calculator. 
 Interfaces include:
 1) A GUI image loader in executable script "image_gui_loader.py"
-2) A GUI drawing app input in executable script "draw.py"
+2) A GUI drawing app input in an executable script "draw.py"
 3) A Web Flask app in executable script "flask_camera.py"
 
 ## Running standalone GUI apps
@@ -23,6 +23,8 @@ Interfaces include:
 ![plot](./Assets/img_load1.png)
 ![plot](./Assets/img_load2.png)
 ![plot](./Assets/img_load3.png)
+
+	You can use sample images from ./img folder.
 
 ### Draw GUI:
 
@@ -47,7 +49,7 @@ Interfaces include:
 
 ### Character separator module:
 
-Character separator take one string argument which is path to image, and saves cropped output in folder "./Characters"
+Character separator takes one string argument which is path to image, and saves cropped output in folder "./Characters"
 
 	$ python3 character_separator.py ./shots/shot_canvas.png
 	
@@ -70,7 +72,7 @@ Training of the new model is as easy as running:
 	
 Training data needs to be in folder data, while our dataset can be obtained at:
 
-	google_link
+	https://drive.google.com/file/d/1Sb-AR4RnaYuiOwM4iHdALhvje26oobXc/view?usp=sharing
 
 ## Docker
 
@@ -80,9 +82,6 @@ Build docker image with Dockerfile:
 	$ sudo docker build -t docker-pmt-daniel .
 	$ sudo chmod 666 /var/run/docker.sock
 	
-## Downloading docker image:
-
-	
 ## Running from docker container:
 
 Set up host PC with:
@@ -90,6 +89,9 @@ Set up host PC with:
     $ sudo apt-get install x11-xserver-utils
 
     $ xhost +
+    
+	$ sudo chmod 666 /var/run/docker.sock
+
 
 Non GUI scripts you can run using (only change script name at the end):
 	
@@ -98,7 +100,6 @@ Non GUI scripts you can run using (only change script name at the end):
 Now you can run all GUI scripts using (just replace name of the script at the end, and run from the git repo's root folder):
 	
 	$ docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix:rw -v $(pwd)/app:/app -v $(pwd):/photomath2 --rm docker_pmt_daniel python3 photomath2/draw.py
-
 	
 	or
 	

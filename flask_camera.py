@@ -101,4 +101,4 @@ if __name__ == '__main__':
     import sys
     os.chdir(sys.path[0])
     p = os.path.sep.join(['shots', "shot_1.jpg"])
-    app.run()
+    app.run(host="0.0.0.0")
