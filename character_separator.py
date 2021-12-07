@@ -74,7 +74,6 @@ def resize_image(img, size=(32, 32)):
     return result
 
 def separate_characters(image, IMG_SIZE = 32, save_characters = False, debug = False):
-
     # Comments are the same as in main so brief version here
 
     print("Image_type:", type(image), " Shape:", image.shape)
