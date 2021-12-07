@@ -53,7 +53,7 @@ if __name__ == '__main__':
     model = keras.models.load_model('Model')
 
     # If we want to predicti on validation dataset (for metrics etc.)
-    validation_bool = False
+    validation_bool = True
 
     if(validation_bool):
         validation = tf.keras.preprocessing.image_dataset_from_directory(
