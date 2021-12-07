@@ -4,12 +4,15 @@
 #
 import argparse
 import os, sys
+import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
 
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Activation, Flatten, Conv2D, MaxPooling2D
 from sklearn.utils import class_weight
+from sklearn.metrics import ConfusionMatrixDisplay
+from sklearn.metrics import confusion_matrix
 
 
 if __name__ == '__main__':
@@ -44,7 +47,6 @@ if __name__ == '__main__':
 
     # Previewing data
     if(args.debug):
-        import matplotlib.pyplot as plt
         #Preview data
 
         class_names = validation.class_names
@@ -141,10 +143,6 @@ if __name__ == '__main__':
     model.save('Model')
 
     # Running confusion matrix metric
-    from sklearn.metrics import ConfusionMatrixDisplay
-    from sklearn.metrics import confusion_matrix
-    import matplotlib.pyplot as plt
-
     y_pred = model.predict(x_test)
     y_pred = [np.argmax(pred) for pred in y_pred]
     labels = ['0', "1", '(', ')', '+', '-', '/', 'x', '2', '3', '4', '5', '6', '7', '8', '9']

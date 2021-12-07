@@ -2,11 +2,20 @@
 #
 #   Script classifies characters from ./Characters folder
 #
-
 import argparse
+import cv2
+import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
 import os, sys
+
+from tensorflow import keras
+from os import listdir
+from os.path import isfile, join
+from sklearn.metrics import ConfusionMatrixDisplay
+from sklearn.metrics import confusion_matrix
+
+IMG_SIZE=32
 
 def get_class_names():
     class_names = ['0', "1", '(', ')', '+', '-', '/', 'x', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -25,7 +34,6 @@ def classify_image(img, model, IMG_SIZE = 32, debug = False):
     class_names = get_class_names()
     
     if(debug):
-        import matplotlib.pyplot as plt
         plt.figure()
         plt.imshow(np.squeeze(normalized_img))
         plt.title(class_names[np.argmax(predictions[0])])
@@ -42,10 +50,7 @@ if __name__ == '__main__':
     parser.add_argument('--debug', dest = "debug", help='Program will print and plot relevant data', action='store_true')
     args = parser.parse_args()
 
-    IMG_SIZE=32
-
     #Loading model
-    from tensorflow import keras
     model = keras.models.load_model('Model')
 
     # If we want to predicti on validation dataset (for metrics etc.)
@@ -64,9 +69,7 @@ if __name__ == '__main__':
         predictions = model.predict([x_testr])
         #print(predictions)
 
-        import matplotlib.pyplot as plt
         #Preview data
-
         class_names = validation.class_names
         print("Class names", class_names)
         class_names[class_names.index("10")] = "("
@@ -75,9 +78,6 @@ if __name__ == '__main__':
         class_names[class_names.index("13")] = "-"
         class_names[class_names.index("14")] = "/"
         class_names[class_names.index("15")] = "x"
-
-        import matplotlib.pyplot as plt
-
 
         plt.figure(figsize=(10, 10))
         start_im = 0
@@ -91,10 +91,6 @@ if __name__ == '__main__':
             plt.show()
  
         # Running metrics
-        from sklearn.metrics import ConfusionMatrixDisplay
-        from sklearn.metrics import confusion_matrix
-        import matplotlib.pyplot as plt
-
         y_pred = model.predict(x_test)
         y_pred = [np.argmax(pred) for pred in y_pred]
         labels = ['0', "1", '(', ')', '+', '-', '/', 'x', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -111,14 +107,9 @@ if __name__ == '__main__':
     #
     else: 
         class_names = get_class_names()
-
-        from os import listdir
-        from os.path import isfile, join
         onlyfiles = [f for f in listdir("Characters") if isfile(join("Characters", f))]
 
         #Predicting arbitrary img
-        import cv2
-        import matplotlib.pyplot as plt
 
         print("File list = ", onlyfiles)
         for filename in onlyfiles:
