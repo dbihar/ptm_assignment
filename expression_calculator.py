@@ -27,11 +27,12 @@ def set_up_list(ex):
     if (ex[0] in ["-", "+"]):
         ex = "0" + ex
 
+    signs = frozenset(["+", '*', '/', '-', '(', ')'])
     #Then it creates the list and adds each individual character to the list
     a_list = []
     a_list.append("")
     for i in range(len(ex)):
-        if ex[i] in ["+", '*', '/', '-', '(', ')']:
+        if ex[i] in signs:
             a_list.append(ex[i])
             a_list.append("")
         else:
@@ -89,8 +90,11 @@ def eval_expression_string(ex):
 
 def eval_expression_list(expression):
     emergency_count = 0
-    P = ["(", ")"]
-    M = ["/", "*"]
+    P = frozenset(["(", ")"])
+    M = frozenset(["/", "*"])
+    plus_minus = frozenset(["+", "-"])
+    times_div = frozenset(["*", "/"])
+    
     # When only one item remains we have evaluated expression
     while len(expression) != 1:
         expression = [item for item in expression if (item!="")]
@@ -155,7 +159,7 @@ def eval_expression_list(expression):
         # Multiply operations
         count = 0
         while count < len(expression) - 1:
-            if expression[count] in ["*", "/"] and not (expression[count+1] in P or expression[count-1] in P):
+            if expression[count] in times_div and not (expression[count+1] in P or expression[count-1] in P):
                 expression[count - 1] = perform_operation(expression[count - 1], expression[count], expression[count + 1])
                 del expression[count + 1]
                 del expression[count]
@@ -165,7 +169,7 @@ def eval_expression_list(expression):
         # Add operations
         count = 1
         while count < len(expression) - 2:
-            if expression[count] in ["+", "-"] and \
+            if expression[count] in plus_minus and \
             not (expression[count+1] in P or expression[count-1] in P or expression[count+2] in M or expression[count-2] in M):
                 expression[count - 1] = perform_operation(expression[count - 1], expression[count], expression[count + 1])
                 del expression[count + 1]
@@ -175,25 +179,25 @@ def eval_expression_list(expression):
         
         # Boundary conditions
         if(len(expression) > 3):
-            if expression[1] in ["+", "-"] and \
+            if expression[1] in plus_minus and \
             not (expression[2] in P or expression[0] in P or expression[3] in M):
                 expression[0] = perform_operation(expression[0], expression[1], expression[2])
                 del expression[2]
                 del expression[1]
         elif len(expression) > 2:
-            if expression[1] in ["+", "-"] and \
+            if expression[1] in plus_minus and \
             not (expression[2] in P or expression[0] in P):
                 expression[0] = perform_operation(expression[0], expression[1], expression[2])
                 del expression[2]
                 del expression[1]
         
         if(len(expression) > 3):
-            if expression[-2] in ["+", "-"] and \
+            if expression[-2] in plus_minus and \
             not (expression[-3] in P or expression[-1] in P or expression[-4] in M):
                 expression[-3] = perform_operation(expression[-1], expression[-2], expression[-3])
                 expression = expression[:-2]
         elif(len(expression) > 2):
-            if expression[-2] in ["+", "-"] and \
+            if expression[-2] in plus_minus and \
             not (expression[-3] in P or expression[-1]):
                 expression[-3] = perform_operation(expression[-1], expression[-2], expression[-3])
                 expression = expression[:-2]
