@@ -1,4 +1,5 @@
-
+*.pdf
+*Model*
 *.pyc
 *Data/*.png
 *Data/*jpg
